@@ -1,0 +1,14 @@
+{
+  "name": "launchpad",
+  "version": "1.0.0",
+  "description": "LaunchPad is an event done by Cana Church that uses a leaderboard to allow people to see their rank when donating / pledging their support for a ministry project",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Brandon Faulkner",
+  "license": "ISC",
+  "dependencies": {
+    "firebase": "^9.21.0"
+  }
+}

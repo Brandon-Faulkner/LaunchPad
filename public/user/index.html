@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en-us">
+
+<head>
+    <title>Launchpad User</title>
+    <link href="https://fonts.cdnfonts.com/css/futura-pt" rel="stylesheet" type="text/css">
+    <link rel="stylesheet" href="style.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <meta name="apple-mobile-web-app-title" content="Cana LaunchPad">
+    <meta name="application-name" content="Cana LaunchPad">
+    <meta name="description"
+        content="Web App used to promote new ministry programs and provide support for them in an engaging way.">
+
+    <link rel="apple-touch-icon" sizes="180x180" href="../resources/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="../resources/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="../resources/favicon-16x16.png">
+    <link rel="manifest" href="../site.webmanifest">
+    <link rel="mask-icon" href="../resources/safari-pinned-tab.svg" color="#2d2d2d">
+    <meta name="msapplication-TileColor" content="#00aa63">
+    <meta name="theme-color" content="#2d2d2d">
+
+</head>
+
+<body>
+    <div id="main" class="main">
+        <div id="owner" class="grid-dark-box">
+            <div class="grid-titles">
+                <div class="line"></div>
+                <div class="titles">
+                    <h1>Project Owner</h1>
+                </div>
+            </div>
+            <div class="light-box">
+                <p id="project-owner-name" style="cursor: default;">Project Owner Name</p>
+            </div>
+        </div>
+        <div id="sponsor" class="grid-dark-box">
+            <div class="grid-titles">
+                <div class="line"></div>
+                <div class="titles">
+                    <h1>Sponsor</h1>
+                </div>
+            </div>
+            <div class="light-box">
+                <p id="sponsor-name" style="cursor: default;">Sponsor Name</p>
+            </div>
+        </div>
+        <div id="contributions" class="grid-main-box">
+            <div class="grid-titles">
+                <div class="line"></div>
+                <div class="titles">
+                    <h2>Choose your contributions for this project and specify your donation amount if you're a
+                        Donor/Pledger to update the leaderboard.</h2>
+                </div>
+            </div>
+            <div class="grid-name-amount">
+                <input type="text" id="usersName" class="name-box" placeholder="First & Last Name..." maxlength="32">
+                <input type="text" id="currency-field" class="amount-box" placeholder="$0" maxlength="10">
+            </div>
+            <div id="prayer" class="border-box grid-radios">
+                <h1 class="titles" style="align-items: center;justify-content: center;margin: auto;">Prayer Partner</h1>
+                <div class="toggle">
+                    <input type="radio" name="prayerRadio" value="yes" id="prayerYes" />
+                    <label for="prayerYes">YES</label>
+                    <input type="radio" name="prayerRadio" value="no" id="prayerNo" checked="checked" />
+                    <label for="prayerNo">NO</label>
+                </div>
+            </div>
+            <div id="donor" class="border-box grid-radios">
+                <h1 class="titles" style="align-items: center;justify-content: center;margin: auto;">Donor/Pledger</h1>
+                <div class="toggle">
+                    <input type="radio" name="donorRadio" value="yes" id="donorYes" />
+                    <label for="donorYes">YES</label>
+                    <input type="radio" name="donorRadio" value="no" id="donorNo" checked="checked" />
+                    <label for="donorNo">NO</label>
+                </div>
+            </div>
+            <div id="team" class="border-box grid-radios">
+                <h1 class="titles" style="align-items: center;justify-content: center;margin: auto;">Team Member</h1>
+                <div class="toggle">
+                    <input type="radio" name="teamRadio" value="yes" id="teamYes" />
+                    <label for="teamYes">YES</label>
+                    <input type="radio" name="teamRadio" value="no" id="teamNo" checked="checked" />
+                    <label for="teamNo">NO</label>
+                </div>
+            </div>
+            <div id="btnHolder" class="grid-btn-holder">
+                <button id="btnQuestion" type="button" class="button">Questions?</button>
+                <button id="btnSubmit" type="button" class="button fadeOut">Submit</button>
+            </div>
+        </div>
+        <div id="main-overlay" class="fadeOut">
+            <div id="overlay-mainbox">
+                <h1 id="overlay-title">Title Here</h1>
+                <textarea id="overlay-textbox" placeholder="Let us know your question..."></textarea>
+                <div id="overlay-buttons-holder">
+                    <button id="btnOverlayCancel" class="button overlay-cancel" type="button">Cancel</button>
+                    <button id="btnOverlaySubmit" class="button overlay-submit" type="button">Got It</button>
+                </div>
+            </div>
+        </div>
+        <div id="loading-overlay">
+            <div id="loader">
+                <div class="dot"></div>
+                <div class="dot"></div>
+                <div class="dot"></div>
+                <div class="dot"></div>
+                <div class="dot"></div>
+            </div>
+            <div id="not-time-box">
+                <h1 id="overlay-title">Not Time For LaunchPad Yet!</h1>
+                <div id="not-time-text-box">
+                    <h3>Whether it be a matter of minutes, days, or months, it is not quite time for LaunchPad to begin!
+                        As soon as you are allowed to use this app, this message will fade away and the event will
+                        begin!
+                    </h3>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script type="module" src="script.js"></script>
+</body>
+
+</html>

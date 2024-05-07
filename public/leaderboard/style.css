@@ -1,0 +1,182 @@
+:root {
+    --color-bg: #242424;
+    --color-alt: #2d2d2d;
+    --color-darkbox: #242424;
+    --color-lightbox: #292929;
+    --color-fg: #fff;
+    --color-lightwhite: rgba(255, 255, 255, .05);
+    --color-green: #00aa63;
+    --box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
+}
+
+body {
+    background-color: var(--color-bg);
+    inset: 0;
+    position: fixed;
+    font-family: 'Futura PT', sans-serif;
+    color: var(--color-fg);
+}
+
+h1 {
+    font-size: calc(1vh + 2vw);
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+
+h2 {
+    font-size: calc(1.25vh + 1.5vw);
+    font-weight: 400;
+}
+
+p {
+    font-size: calc(1vh + 2vw);
+    margin-left: 2%;
+    font-weight: 400;
+}
+
+.grid-dark-box {
+    background-color: var(--color-alt);
+    border-radius: 5px;
+    display: grid;
+    grid-template-columns: 100%;
+    grid-template-rows: 40% 60%;
+    box-shadow: var(--box-shadow);
+}
+
+.grid-titles {
+    display: grid;
+    grid-template-columns: 5% 94.5%;
+    grid-template-rows: 100%;
+    width: 98.75%;
+    height: 100%;
+    margin: auto;
+}
+
+.line {
+    display: inline-flex;
+    background: var(--color-green);
+    border-radius: 5px;
+    max-width: 15px;
+    width: 50%;
+    height: 75%;
+    margin: auto;
+}
+
+.titles {
+    justify-content: flex-start;
+    padding-left: 1%;
+}
+
+.light-box {
+    display: flex;
+    background-color: var(--color-lightwhite);
+    border-radius: 5px;
+    width: 95%;
+    height: auto;
+    max-height: 6vh;
+    align-items: center;
+    margin: auto;
+    box-shadow: var(--box-shadow);
+}
+
+.grid-board-box {
+    opacity: 0;
+    transition: opacity .2s;
+    background-color: var(--color-darkbox);
+    border-radius: 5px;
+    width: 100%;
+    display: grid;
+    grid-template-columns: 100%;
+    grid-template-rows: 18% repeat(5, 16.4%);
+}
+
+.names {
+    background-color: var(--color-alt);
+    border-radius: 5px;
+    height: 90%;
+    margin: 0 10px 0 10px;
+    display: flex;
+    text-align: center;
+    justify-content: center;
+    align-items: center;
+    box-shadow: var(--box-shadow);
+}
+
+#main {
+    display: grid;
+    grid-template-columns: 100%;
+    grid-template-rows: 20% 68% 8%;
+    grid-gap: 2%;
+    position: fixed;
+    inset: 10px;
+}
+
+#grid-owner-sponser {
+    display: grid;
+    grid-template-columns: 49.5% 49.5%;
+    grid-template-rows: 100%;
+    grid-gap: 1%;
+}
+
+#grid-boards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(33.33%, auto));
+    grid-template-rows: 100%;
+}
+
+#donor-title, #prayer-title, #team-title {
+    margin: 5px 10px 0 10px;
+    background-color: transparent;
+    border-color: var(--color-green);
+    border-style: solid;
+    border-width: 4px;
+    border-radius: 10px;
+    height: 80%;
+    box-shadow: var(--box-shadow);
+}
+
+#grid-board-totals {
+    background-color: var(--color-alt);
+    border-radius: 5px;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(33.33%, auto));
+    grid-template-rows: 100%;
+    box-shadow: var(--box-shadow);
+}
+
+#donor-total, #prayer-total, #team-total {
+    padding: 0 5px;
+    font-weight: 400;
+    opacity: 0;
+    transition: opacity .2s;
+}
+
+.fadeIn {
+    animation: fadeIn .2s linear forwards;
+}
+
+.fadeOut {
+    animation: fadeOut .2s linear forwards;
+}
+
+@keyframes fadeIn {
+    0% {
+        opacity: 0;
+    }
+
+    100% {
+        opacity: 1;
+    }
+}
+
+@keyframes fadeOut {
+    0% {
+        opacity: 1;
+    }
+
+    100% {
+        opacity: 0;
+    }
+}

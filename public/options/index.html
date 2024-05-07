@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en-us">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Launchpad Options</title>
+    <link href='https://fonts.googleapis.com/css?family=Open Sans' rel='stylesheet'>
+    <link rel="stylesheet" href="style.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+</head>
+
+<body>
+    <section id="notification" class="message-success">
+        <header></header>
+        <i></i>
+        <h2>
+          <span style="color:#fff">Successfully Submitted Changes!</span>
+        </h2>
+      </section>
+    <div id="main" class="main">
+        <div id="owner" class="grid-dark-box">
+            <div class="grid-titles">
+                <div class="blue-line"></div>
+                <div class="titles">
+                    <h1>Project Owner</h1>
+                </div>
+            </div>
+            <div class="light-box">
+                <select id="project-dropdown" class="dropdown">
+                    <option value="Default">Select a Project</option>
+                </select>
+            </div>
+        </div>
+        <div id="sponsor" class="grid-dark-box">
+            <div class="grid-titles">
+                <div class="blue-line"></div>
+                <div class="titles">
+                    <h1>Sponsor</h1>
+                </div>
+            </div>
+            <div class="light-box">
+                <input type="text" id="name" class="name-box" placeholder="Enter Sponsor Name..." maxlength="64"
+                    pattern="[^a-zA-Z]+">
+            </div>
+        </div>
+        <div id="main" class="grid-main-box">
+            <div class="grid-options">
+                <div class="grid-titles">
+                    <div class="blue-line"></div>
+                    <div class="titles">
+                        <h1>Options</h1>
+                    </div>
+                </div>
+                <button id="btnUserApp" type="button" class="button" style="font-size: calc(2px + 1.5vw);">USER
+                    APP</button>
+                <button id="btnLeaderboard" type="button" class="button"
+                    style="font-size: calc(2px + 1.5vw);">LEADERBOARD</button>
+            </div>
+            <div id="prayer" class="border-box grid-radios">
+                <h1 class="titles" style="align-items: center;justify-content: center;margin: auto;">Prayer Partner
+                    Board</h1>
+                <div class="toggle">
+                    <input type="radio" name="prayerRadio" value="true" id="prayerOn" />
+                    <label for="prayerOn">ON</label>
+                    <input type="radio" name="prayerRadio" value="false" id="prayerOff" checked="checked" />
+                    <label for="prayerOff">OFF</label>
+                </div>
+            </div>
+            <div id="donor" class="border-box grid-radios">
+                <h1 class="titles" style="align-items: center;justify-content: center;margin: auto;">Donor/Pledger Board
+                </h1>
+                <div class="toggle">
+                    <input type="radio" name="donorRadio" value="true" id="donorOn" />
+                    <label for="donorOn">ON</label>
+                    <input type="radio" name="donorRadio" value="false" id="donorOff" checked="checked" />
+                    <label for="donorOff">OFF</label>
+                </div>
+            </div>
+            <div id="team" class="border-box grid-radios">
+                <h1 class="titles" style="align-items: center;justify-content: center;margin: auto;">Team Member Board
+                </h1>
+                <div class="toggle">
+                    <input type="radio" name="teamRadio" value="true" id="teamOn" />
+                    <label for="teamOn">ON</label>
+                    <input type="radio" name="teamRadio" value="false" id="teamOff" checked="checked" />
+                    <label for="teamOff">OFF</label>
+                </div>
+            </div>
+            <div class="grid-buttons">
+                <button id="btnSponsorName" type="button" class="button">SUBMIT SPONSOR NAME</button>
+                <button id="btnBoardChanges" type="button" class="button">SUBMIT BOARD CHANGES</button>
+            </div>
+        </div>
+        <div id="main-overlay">
+            <div id="user-app">
+                <h1 id="overlay-title">User App Toggle</h1>
+                <div id="user-app-box" class="grid-radios">
+                    <h1 class="titles" style="align-items: center;justify-content: center;margin: auto;">User App</h1>
+                    <div class="toggle">
+                        <input type="radio" name="userRadio" value="true" id="userOn" />
+                        <label for="userOn">ON</label>
+                        <input type="radio" name="userRadio" value="false" id="userOff" checked="checked" />
+                        <label for="userOff">OFF</label>
+                    </div>
+                </div>
+                <div id="overlay-buttons-holder">
+                    <button id="btnUserCancel" class="overlay-buttons cancel" type="button">CANCEL</button>
+                    <button id="btnUserSubmit" class="overlay-buttons submit" type="button">SUBMIT</button>
+                </div>
+            </div>
+            <div id="leaderboard">
+                <h1 id="overlay-title">Leaderboard Boards</h1>
+                <div id="leaderboard-box">
+                    <div class="grid-options-overlay">
+                        <div class="grid-titles">
+                            <div class="blue-line"></div>
+                            <div class="titles">
+                                <h1>Prayer Partners</h1>
+                            </div>
+                        </div>
+                        <button id="btnCancel0" type="button" name="prayer" class="leaderboard-buttons"
+                            style="font-size: calc(2px + 1.5vw);">CANCEL</button>
+                        <button id="btnDelete0" type="button" name="prayer" class="leaderboard-buttons delete"
+                            style="font-size: calc(2px + 1.5vw);">DELETE</button>
+                    </div>
+                    <div class="leaderboard-light-box" id="prayerPartners">
+                    </div>
+                </div>
+                <div id="leaderboard-box">
+                    <div class="grid-options-overlay">
+                        <div class="grid-titles">
+                            <div class="blue-line"></div>
+                            <div class="titles">
+                                <h1>Donors/Pledgers</h1>
+                            </div>
+                        </div>
+                        <button id="btnCancel1" type="button" name="donor" class="leaderboard-buttons"
+                            style="font-size: calc(2px + 1.5vw);">CANCEL</button>
+                        <button id="btnDelete1" type="button" name="donor" class="leaderboard-buttons delete"
+                            style="font-size: calc(2px + 1.5vw);">DELETE</button>
+                    </div>
+                    <div class="leaderboard-light-box" id="donorsPledgers">
+
+                    </div>
+                </div>
+                <div id="leaderboard-box">
+                    <div class="grid-options-overlay">
+                        <div class="grid-titles">
+                            <div class="blue-line"></div>
+                            <div class="titles">
+                                <h1>Team Members</h1>
+                            </div>
+                        </div>
+                        <button id="btnCancel2" type="button" name="team" class="leaderboard-buttons"
+                            style="font-size: calc(2px + 1.5vw);">CANCEL</button>
+                        <button id="btnDelete2" type="button" name="team" class="leaderboard-buttons delete"
+                            style="font-size: calc(2px + 1.5vw);">DELETE</button>
+                    </div>
+                    <div class="leaderboard-light-box" id="teamMembers">
+
+                    </div>
+                </div>
+                <div id="overlay-buttons-holder">
+                    <button id="btnLeaderboardOk" class="overlay-buttons submit" type="button">DONE</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script type="module" src="script.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,62 @@
+{
+  "database": {
+    "rules": "database.rules.json"
+  },
+  "hosting": {
+    "public": "public",
+    "ignore": [
+      "firebase.json",
+      "**/.*",
+      "**/node_modules/**"
+    ],
+    "headers": [
+      {
+        "source": "/service-worker.js",
+        "headers": [
+          {
+            "key": "Cache-Control",
+            "value": "no-cache"
+          }
+        ]
+      },
+      {
+        "source": "**/*.@(eot|otf|ttf|ttc|woff|font.css)",
+        "headers": [
+          {
+            "key": "Access-Control-Allow-Origin",
+            "value": "*"
+          }
+        ]
+      }
+    ],
+    "redirects":[
+      {
+        "source": "/",
+        "destination": "/user",
+        "type": 301
+      }
+    ],
+    "rewrites": [
+      {
+        "source": "/options",
+        "destination": "/options",
+        "type": 301
+      },
+      {
+        "source": "/questions",
+        "destination": "/questions",
+        "type": 301
+      },
+      {
+        "source": "/leaderboard",
+        "destination": "/leaderboard",
+        "type": 301
+      },
+      {
+        "source": "/user",
+        "destination": "/user",
+        "type": 301
+      }
+    ]
+  }
+}
