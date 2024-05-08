@@ -44,6 +44,7 @@ window.addEventListener('load', (event) => {
   const currTheme = GetThemeString(localTheme, darkTheme);
   document.querySelector("html").setAttribute("data-theme", currTheme);
   currTheme === "dark" ? darkModeToggle.className = "fa-solid fa-lightbulb" : darkModeToggle.className = "fa-regular fa-lightbulb";
+  document.querySelector('meta[name="theme-color"]').setAttribute("content", currTheme === "dark" ? "#242424" : "#fff");
 
   function GetThemeString(localTheme, darkTheme) {
     if (localTheme !== null) return localTheme;
@@ -55,7 +56,8 @@ window.addEventListener('load', (event) => {
     const newTheme = darkModeToggle.classList.contains("fa-solid") ? "light" : "dark";
     localStorage.setItem("theme", newTheme);
     document.querySelector("html").setAttribute("data-theme", newTheme);
-    newTheme === "dark" ? darkModeToggle.className = "fa-solid fa-lightbulb" : darkModeToggle.className = "fa-regular fa-lightbulb"
+    newTheme === "dark" ? darkModeToggle.className = "fa-solid fa-lightbulb" : darkModeToggle.className = "fa-regular fa-lightbulb";
+    document.querySelector('meta[name="theme-color"]').setAttribute("content", newTheme === "dark" ? "#242424" : "#fff");
   });
 
   //#region Variables
