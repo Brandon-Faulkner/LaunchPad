@@ -4,13 +4,15 @@
 <head>
     <title>LaunchPad Leaderboard</title>
     <link href="https://fonts.cdnfonts.com/css/futura-pt" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+        integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link rel="stylesheet" href="style.css">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
     <meta name="apple-mobile-web-app-title" content="Cana LaunchPad">
     <meta name="application-name" content="Cana LaunchPad">
     <meta name="description"
         content="Web App used to promote new ministry programs and provide support for them in an engaging way.">
-
     <link rel="apple-touch-icon" sizes="180x180" href="../resources/apple-touch-icon.png">
     <link rel="icon" type="image/png" sizes="32x32" href="../resources/favicon-32x32.png">
     <link rel="icon" type="image/png" sizes="16x16" href="../resources/favicon-16x16.png">
@@ -21,6 +23,20 @@
 </head>
 
 <body>
+    <div id="login-page">
+        <div id="login-wrapper">
+            <div id="login-title">Login to Continue</div>
+            <div class="login-field">
+                <input id="login-email" type="text" placeholder="Email Address" required>
+              </div>
+              <div class="login-field">
+                <input id="login-password" type="password" placeholder="Password" required>
+                <span class="fa-solid fa-eye eye-icon"></span>
+              </div>
+              <button id="login-button">Log In</button>
+        </div>
+      </div>
+      
     <div id="main">
         <div id="grid-owner-sponser">
             <div id="owner" class="grid-dark-box">

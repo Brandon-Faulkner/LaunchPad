@@ -1,6 +1,7 @@
 // Import the functions you need from the SDKs you need
-import { initializeApp } from "https://www.gstatic.com/firebasejs/9.9.2/firebase-app.js";
-import { getDatabase, ref, onValue, child, update } from "https://www.gstatic.com/firebasejs/9.9.2/firebase-database.js";
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.11.1/firebase-app.js";
+import { getDatabase, ref, onValue, child, update } from "https://www.gstatic.com/firebasejs/10.11.1/firebase-database.js";
+import { getAuth, onAuthStateChanged, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.11.1/firebase-auth.js";
 
 const firebaseConfig = {
     apiKey: "AIzaSyCkhBqKXXHQcgk9QYS7TTCY9I1kjx_bowk",
@@ -13,9 +14,9 @@ const firebaseConfig = {
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
-// Initialize Realtime Database
 const database = getDatabase(app);
 const userAppRef = ref(database, 'UserApp/');
+const auth = getAuth(app);
 
 function FadeInOut(elem, show) {
     if (show == true) {
@@ -40,6 +41,55 @@ function ClearLeaderboard(boardNames) {
 }
 
 window.addEventListener('load', function () {
+    var loginPage = document.getElementById("login-page");
+    var loginButton = document.getElementById("login-button");
+    var loginEmail = document.getElementById("login-email");
+    var loginPassword = document.getElementById("login-password");
+    var loginPeek = loginPassword.nextElementSibling;
+
+    //Detect login status
+    onAuthStateChanged(auth, (user) => {
+        if (user === null) {
+            //No one is signed in, prompt login
+            loginPage.classList.add("pop-up");
+        } else if (user.isAnonymous === false) {
+            //User is signed in
+            loginPage.remove();
+            ListenForLeaderboard();
+        }
+    });
+
+    loginButton.addEventListener('click', function () {
+        loginEmail.classList.remove("login-error");
+        loginPassword.classList.remove("login-error");
+        loginButton.classList.add("login-click");
+
+        if (loginEmail.value.trim().length > 0 && loginPassword.value.trim().length > 0) {
+            signInWithEmailAndPassword(auth, loginEmail.value, loginPassword.value).catch((error) => {
+                console.log(error.message);
+                loginEmail.classList.add('login-error');
+                loginPassword.classList.add('login-error');
+                loginButton.classList.remove('login-click');
+            });
+        } else {
+            loginEmail.classList.add('login-error');
+            loginPassword.classList.add('login-error');
+            loginButton.classList.remove("login-click");
+        }
+    });
+
+    loginPeek.addEventListener('click', function () {
+        if (loginPeek.classList.contains('fa-eye')) {
+            loginPeek.className = "fa-solid fa-eye-slash eye-icon";
+            loginPassword.setAttribute('type', 'text');
+          } else {
+            loginPeek.className = "fa-solid fa-eye eye-icon";
+            loginPassword.setAttribute('type', 'password');
+          }
+    });  
+});
+
+function ListenForLeaderboard() {
     //Firebase listener unsubscribers
     var donorUnsub = null;
     var prayerUnsub = null;
@@ -104,7 +154,7 @@ window.addEventListener('load', function () {
                     donorArray.sort((a, b) => (b.pledge - a.pledge));
 
                     ClearLeaderboard(["donor"]);
-                    for (let i = 0; i < donorArray.slice(0,5).length; i++) {
+                    for (let i = 0; i < donorArray.slice(0, 5).length; i++) {
                         document.getElementById("donor" + i).textContent =
                             donorArray[i].name + " " + currencyFormatter.format(donorArray[i].pledge);
                     }
@@ -124,12 +174,12 @@ window.addEventListener('load', function () {
                     snapshot.forEach((data) => {
                         prayerArray.unshift(data.val());
                     });
-    
+
                     ClearLeaderboard(["prayer"]);
-                    for (let i = 0; i < prayerArray.slice(0,5).length; i++) {
+                    for (let i = 0; i < prayerArray.slice(0, 5).length; i++) {
                         document.getElementById("prayer" + i).textContent = prayerArray[i];
                     }
-    
+
                     prayerTotal.textContent = "Partners: " + snapshot.size;
                     const updates = {}; updates['Projects/' + currentProject + '/Totals/Partners'] = snapshot.size;
                     update(ref(database), updates);
@@ -137,7 +187,7 @@ window.addEventListener('load', function () {
             } else {
                 prayerUnsub == null ? null : prayerUnsub();
             }
-            
+
             if (isTeamBoardOn) {
                 teamUnsub == null ? null : teamUnsub();
                 teamUnsub = onValue(ref(database, 'Projects/' + currentProject + "/Board:TeamMembers/Names/"), (snapshot) => {
@@ -145,21 +195,21 @@ window.addEventListener('load', function () {
                     snapshot.forEach((data) => {
                         teamArray.unshift(data.val());
                     });
-    
+
                     ClearLeaderboard(["team"]);
-                    for (let i = 0; i < teamArray.slice(0,5).length; i++) {
+                    for (let i = 0; i < teamArray.slice(0, 5).length; i++) {
                         document.getElementById("team" + i).textContent = teamArray[i];
                     }
-    
+
                     teamTotal.textContent = "Members: " + snapshot.size;
                     const updates = {}; updates['Projects/' + currentProject + '/Totals/Members'] = snapshot.size;
                     update(ref(database), updates);
                 });
             } else {
                 teamUnsub == null ? null : teamUnsub();
-            }    
+            }
         } catch (error) {
             console.log(error);
         }
     });
-});
+}
