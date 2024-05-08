@@ -1,16 +1,18 @@
 <!DOCTYPE html>
-<html lang="en-us">
+<html lang="en-us" data-theme="dark">
 
 <head>
     <title>Launchpad User</title>
     <link href="https://fonts.cdnfonts.com/css/futura-pt" rel="stylesheet" type="text/css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+        integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link rel="stylesheet" href="style.css">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
     <meta name="apple-mobile-web-app-title" content="Cana LaunchPad">
     <meta name="application-name" content="Cana LaunchPad">
     <meta name="description"
         content="Web App used to promote new ministry programs and provide support for them in an engaging way.">
-
     <link rel="apple-touch-icon" sizes="180x180" href="../resources/apple-touch-icon.png">
     <link rel="icon" type="image/png" sizes="32x32" href="../resources/favicon-32x32.png">
     <link rel="icon" type="image/png" sizes="16x16" href="../resources/favicon-16x16.png">
@@ -28,6 +30,7 @@
                 <div class="line"></div>
                 <div class="titles">
                     <h1>Project Owner</h1>
+                    <i id="dark-mode-toggle" class="fa-solid fa-lightbulb"></i>
                 </div>
             </div>
             <div class="light-box">
@@ -55,7 +58,8 @@
             </div>
             <div class="grid-name-amount">
                 <input type="text" id="usersName" class="name-box" placeholder="First & Last Name..." maxlength="32">
-                <input type="text" id="currency-field" class="amount-box" placeholder="$0" maxlength="10">
+                <input type="text" id="currency-field" class="amount-box" placeholder="$0" maxlength="10"
+                    pattern="[0-9]*" inputmode="numeric">
             </div>
             <div id="prayer" class="border-box grid-radios">
                 <h1 class="titles" style="align-items: center;justify-content: center;margin: auto;">Prayer Partner</h1>

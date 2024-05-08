@@ -1,8 +1,8 @@
 //#region Firebase Initalization
 // Import the functions you need from the SDKs you need
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-import { getDatabase, ref, onValue, child, push, set } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
-import { getAuth, onAuthStateChanged, signInAnonymously } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.11.1/firebase-app.js";
+import { getDatabase, ref, onValue, child, push, set } from "https://www.gstatic.com/firebasejs/10.11.1/firebase-database.js";
+import { getAuth, onAuthStateChanged, signInAnonymously } from "https://www.gstatic.com/firebasejs/10.11.1/firebase-auth.js";
 
 const firebaseConfig = {
   apiKey: "AIzaSyCkhBqKXXHQcgk9QYS7TTCY9I1kjx_bowk",
@@ -18,7 +18,6 @@ const app = initializeApp(firebaseConfig);
 const database = getDatabase(app);
 const auth = getAuth(app);
 
-const connectedRef = ref(database, ".info/connected");
 const isUsableRef = ref(database, 'UserApp/isUsable');
 const projectOwnerRef = ref(database, 'UserApp/CurrentProject');
 const sponsorNameRef = ref(database, 'UserApp/CurrentSponsor');
@@ -38,6 +37,27 @@ window.addEventListener('load', (event) => {
     }).catch(swErr => console.log(`Service Worker Installation Error: ${swErr}}`));
   }
 
+  //Detect users prefered color scheme
+  const darkModeToggle = document.getElementById("dark-mode-toggle");
+  const localTheme = localStorage.getItem("theme");
+  const darkTheme = window.matchMedia("(prefers-color-scheme: dark)");
+  const currTheme = GetThemeString(localTheme, darkTheme);
+  document.querySelector("html").setAttribute("data-theme", currTheme);
+  currTheme === "dark" ? darkModeToggle.className = "fa-solid fa-lightbulb" : darkModeToggle.className = "fa-regular fa-lightbulb";
+
+  function GetThemeString(localTheme, darkTheme) {
+    if (localTheme !== null) return localTheme;
+    if (darkTheme.matches) return "dark";
+    return "light";
+  }
+
+  darkModeToggle.addEventListener('click', function () {
+    const newTheme = darkModeToggle.classList.contains("fa-solid") ? "light" : "dark";
+    localStorage.setItem("theme", newTheme);
+    document.querySelector("html").setAttribute("data-theme", newTheme);
+    newTheme === "dark" ? darkModeToggle.className = "fa-solid fa-lightbulb" : darkModeToggle.className = "fa-regular fa-lightbulb"
+  });
+
   //#region Variables
   //Overlay Elems
   const loadingAnim = document.getElementById("loader");
@@ -51,10 +71,11 @@ window.addEventListener('load', (event) => {
   const btnOverlaySubmit = document.getElementById("btnOverlaySubmit");
 
   //Overlay Messages - Option Not Selected, Amount Is Empty, Submission Successful, Error With Submission
-  const submitOptionText = "It looks like you didn't select from one of the available options to be part of for this project. Before you submit, please make sure to select any option(s)."
-  const submitAmountText = "Please enter your donation amount to update the leaderboard. We'll contact you after LaunchPad to finalize your donation. Press submit after entering the amount."
-  const submitSuccessText = "Your name and options for the project are submitted successfully and should show on the Leaderboard! If you chose to be a Donor/Pledger, no payment today; we'll reach out post LaunchPad for the contribution."
-  const submitErrorText = "Oops! Something went wrong with your submission. Please submit again or reload the page and submit."
+  const submitOptionText = "It looks like you didn't select from one of the available options to be part of for this project. Before you submit, please make sure to select any option(s).";
+  const submitAmountText = "Please enter your donation amount to update the leaderboard. We'll contact you after LaunchPad to finalize your donation. Press submit after entering the amount.";
+  const submitSuccessText = "Your name and options for the project are submitted successfully and should show on the Leaderboard! If you chose to be a Donor/Pledger, no payment today; we'll reach out post LaunchPad for the contribution.";
+  const submitErrorText = "Oops! Something went wrong with your submission. Please submit again or reload the page and submit.";
+  const submitQuestionText = "Your question has been submitted. The host will do their best to ask your question in a timely manner!";
 
   //Main page Elems
   const projectOwnerName = document.getElementById("project-owner-name");
@@ -76,17 +97,15 @@ window.addEventListener('load', (event) => {
     if (user) {
       //Signed in Anonymously
       onValue(isUsableRef, (snapshot) => {
-        if (String(snapshot.val()) === "true") {
-          setTimeout(function () {
-            FadeElems(loadingOverlay, false);
-            FadeElems(notTimeBox, false);
-            FadeElems(loadingAnim, false);
-          }, 1000);
+        if (snapshot.val() === true) {
+          FadeElems(loadingOverlay, false);
+          FadeElems(notTimeBox, false);
+          FadeElems(loadingAnim, false);
         }
         else {
           FadeElems(loadingOverlay, true);
           FadeElems(notTimeBox, true);
-          FadeElems(loadingAnim, true);
+          FadeElems(loadingAnim, false);
         }
       });
     } else {
@@ -99,7 +118,7 @@ window.addEventListener('load', (event) => {
           console.log("Signed in Anonymously");
         })
         .catch((error) => {
-          console.log(error.code + ": " + error.message);
+          console.log(error.message);
         });
     }
   });
@@ -182,15 +201,16 @@ window.addEventListener('load', (event) => {
   });
 
   btnOverlaySubmit.addEventListener('click', function () {
-    FadeElems(mainOverlay, false);
-
     if (overlayMainBox.getAttribute("data-type") == "question") {
       if (overlayTextBox.value != "" && overlayTextBox.value != " ") {
         //Submit the question to the DB under UserApp/Questions
         push(child(ref(database), 'UserApp/Questions'), overlayTextBox.value);
+        UpdatePopup("popup", "Question Submitted", "false", submitQuestionText);
+        return;
       }
     }
 
+    FadeElems(mainOverlay, false);
     UpdatePopup("popup", "Title", "false", "");
   });
 
@@ -262,7 +282,7 @@ window.addEventListener('load', (event) => {
   //#region Helper Functions
   var goodValue = null;
   function CheckForNumber(input) {
-    const inputValue = input.value.replace(/\$|,/g, "");
+    var inputValue = input.value.replace(/\$|,/g, "");
 
     if (inputValue == "0" || inputValue == "") {
       goodValue = "";
@@ -274,7 +294,7 @@ window.addEventListener('load', (event) => {
       goodValue = inputValue;
       FormatCurrency(inputValue);
     } else {
-      input.value = goodValue;
+      FormatCurrency(goodValue);
     }
   }
 

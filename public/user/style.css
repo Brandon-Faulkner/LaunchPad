@@ -1,15 +1,37 @@
 /*#region MAIN STYLES*/
 :root {
-  --color-bg: #242424;
-  --color-alt: #2d2d2d;
-  --color-overlay: rgba(45, 45, 45, .98);
-  --color-darkbox: #242424;
-  --color-lightbox: #292929;
-  --color-fg: #fff;
-  --color-lightwhite: rgba(255,255,255,.05);
+  --color-white: #fff;
+  --color-white-darkbox: #f2f2f2;
+  --color-white-lightbox: #f7f7f7;
+  --color-white-overlay: #fffffffa;
+  --color-white-yes: #24242440;
+  --color-dark: #242424;
+  --color-dark-darkbox: #242424;
+  --color-dark-lightbox: #292929;
+  --color-dark-overlay: #2e2e2efa;
+  --color-dark-yes: #ffffff40;
+  --color-lightwhite: #ffffff0d;
   --color-green: #00aa63;
   --color-red: #f04545;
-  --box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
+  --box-shadow: 0 3px 6px #00000029, 0 3px 6px #0000003b;
+}
+
+[data-theme="light"] {
+  --color-bg: var(--color-white);
+  --color-fg: var(--color-dark);
+  --color-darkbox: var(--color-white-darkbox);
+  --color-lightbox: var(--color-white-lightbox);
+  --color-overlay: var(--color-white-overlay);
+  --color-label-yes: var(--color-white-yes);
+}
+
+[data-theme="dark"] {
+  --color-bg: var(--color-dark);
+  --color-fg: var(--color-white);
+  --color-darkbox: var(--color-dark-darkbox);
+  --color-lightbox: var(--color-dark-lightbox);
+  --color-overlay: var(--color-dark-overlay);
+  --color-label-yes: var(--color-dark-yes);
 }
 
 body {
@@ -135,7 +157,7 @@ input:focus, textarea:focus {
 
 .button {
   font-size: clamp(14px, 3vw, 24px);
-  color: rgb(255, 255, 255);
+  color: var(--color-white);
   border-radius: 6px;
   background: var(--color-green);
   box-shadow: var(--box-shadow);
@@ -226,6 +248,18 @@ input:focus, textarea:focus {
   cursor: default;
 }
 
+.fa-lightbulb {
+  margin-left: auto;
+  margin-right: 20px;
+  font-size: clamp(18px, 5vw, 32px);
+  color: var(--color-fg);
+  cursor: pointer;
+}
+
+.fa-lightbulb:hover {
+  transform: scale(1.25);
+}
+
 h1 {
   font-size: clamp(16px, 3vw, 28px);
 }
@@ -235,6 +269,7 @@ h2 {
 }
 
 h3 {
+  color: var(--color-fg);
   font-size: clamp(14px, 3vw, 32px);
   padding: 10px;
   overflow: auto;
@@ -277,7 +312,7 @@ p {
   position: relative;
   display: inline-block;
   background-color: var(--color-bg);
-  color: rgba(255, 255, 255, .25);
+  color: var(--color-label-yes);
   font-size: clamp(14px, 3vw, 24px);
   line-height: 140%;
   font-weight: 600;
@@ -347,14 +382,14 @@ p {
   grid-template-columns: 100%;
   grid-template-rows: 20% 70% 10%;
   border-radius: 10px;
-  background-color: var(--color-alt);
+  background: var(--color-darkbox);
   box-shadow: var(--box-shadow);
   width: 95%;
   max-width: 1000px;  
 }
 
 #not-time-text-box {
-  background-color: var(--color-lightwhite);
+  background-color: var(--color-lightbox);
   color: var(--color-fg);
   height: 92.5%;
   width: 95%;
@@ -445,10 +480,7 @@ p {
 /*LOADING ANIMATION*/
 #loader {
   position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
+  inset: 0;
   display: flex;
   z-index: 1;
   justify-content: center;
