@@ -249,15 +249,22 @@ input:focus, textarea:focus {
 }
 
 .fa-lightbulb {
-  margin-left: auto;
-  margin-right: 20px;
-  font-size: clamp(18px, 5vw, 32px);
+  margin: 10px 10px 0px auto;
+  font-size: clamp(16px, 5vw, 24px);
   color: var(--color-fg);
   cursor: pointer;
+  box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.4);
+  width: 40px;
+  height: 40px;
+  border-radius: 100%;
+  justify-content: center;
+  align-items: center;
+  display: flex;
+  transition: color .2s linear;
 }
 
 .fa-lightbulb:hover {
-  transform: scale(1.25);
+  color: var(--color-green);
 }
 
 h1 {
@@ -284,6 +291,156 @@ p {
   color: var(--color-fg);
 }
 /*#endregion MAIN STYLES*/
+
+/*#region MENU*/
+#menu {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transform: rotate(180deg);
+}
+
+#menu-toggle {
+  margin: 0 0 10px 2px;
+  width: 40px;
+  height: 40px;
+  z-index: 3;
+  border-radius: 100%;
+  box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.4);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  animation: menu-toggle-reverse 0.4s ease-out forwards;
+}
+
+#menu:hover #menu-toggle::before, 
+#menu:hover #menu-toggle::after {
+  background: var(--color-green);
+}
+
+#menu-toggle::before, #menu-toggle::after {
+  content: "";
+  display: block;
+  position: absolute;
+  border-radius: 4px;
+  background: var(--color-fg);
+  transition: background .2s linear;
+}
+
+#menu-toggle::before {
+  width: 4px;
+  height: 18px;
+}
+
+#menu-toggle::after {
+  width: 18px;
+  height: 4px;
+}
+
+#menu-container {
+  width: 32px;
+  height: 150px;
+  border-radius: 64px;
+  position: absolute;
+  background: var(--color-green);
+  z-index: 2;
+  padding: 0.5rem 0.5rem;
+  box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.4);
+  opacity: 0;
+  top: -110px;
+  display: flex;
+  pointer-events: none;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
+  transition: opacity 0.2s ease-in, top 0.2s ease-in, width 0.1s ease-in;
+}
+
+#menu-container a {
+  color: var(--color-white);
+  opacity: 0.8;
+  transform: rotate(180deg);
+  font-size: 24px;
+}
+
+#menu-container a:hover {
+  transition: 0.2s;
+  opacity: 1;
+  color: var(--color-dark);
+}
+
+#menu input {
+  height: 100%;
+  width: 100%;
+  cursor: pointer;
+  position: absolute;
+  z-index: 5;
+  opacity: 0;
+}
+
+#menu input:checked ~ #menu-toggle {
+  animation: menu-toggle 0.4s ease-out forwards;
+}
+
+#menu input:checked ~ #menu-container {
+  width: 32px;
+  height: 150px;
+  animation: menu-container 0.4s ease-out forwards 0.1s;
+  top: -180px;
+  opacity: 1;
+  pointer-events: all;
+}
+
+@keyframes menu-toggle {
+  0% {
+    transform: rotate(0) scale(1);
+  }
+  20% {
+    transform: rotate(60deg) scale(0.93);
+  }
+  55% {
+    transform: rotate(35deg) scale(0.97);
+  }
+  80% {
+    transform: rotate(48deg) scale(0.94);
+  }
+  100% {
+    transform: rotate(45deg) scale(0.95);
+  }
+}
+@keyframes menu-toggle-reverse {
+  0% {
+    transform: rotate(45deg) scale(0.95);
+  }
+  20% {
+    transform: rotate(-15deg);
+  }
+  55% {
+    transform: rotate(10deg);
+  }
+  80% {
+    transform: rotate(-3deg);
+  }
+  100% {
+    transform: rotate(0) scale(1);
+  }
+}
+@keyframes menu-container {
+  0% {
+    transform: scale(1, 1);
+  }
+  33% {
+    transform: scale(0.95, 1.05);
+  }
+  66% {
+    transform: scale(1.05, 0.95);
+  }
+  100% {
+    transform: scale(1, 1);
+  }
+}
+
+/*#endregion MENU*/
 
 /*#region TOGGLES*/
 .toggle {
