@@ -49,13 +49,19 @@ window.addEventListener('load', function () {
 
     //Detect login status
     onAuthStateChanged(auth, (user) => {
-        if (user === null) {
+        console.log(user);
+        if (user) {
+            if (user.isAnonymous === false) {
+                //Signed in admin
+                loginPage.remove();
+                ListenForLeaderboard();
+            } else {
+                //No one is signed in, prompt login
+                loginPage.classList.add("pop-up");
+            }
+        } else {
             //No one is signed in, prompt login
             loginPage.classList.add("pop-up");
-        } else if (user.isAnonymous === false) {
-            //User is signed in
-            loginPage.remove();
-            ListenForLeaderboard();
         }
     });
 
@@ -82,11 +88,11 @@ window.addEventListener('load', function () {
         if (loginPeek.classList.contains('fa-eye')) {
             loginPeek.className = "fa-solid fa-eye-slash eye-icon";
             loginPassword.setAttribute('type', 'text');
-          } else {
+        } else {
             loginPeek.className = "fa-solid fa-eye eye-icon";
             loginPassword.setAttribute('type', 'password');
-          }
-    });  
+        }
+    });
 });
 
 function ListenForLeaderboard() {
