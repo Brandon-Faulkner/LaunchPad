@@ -105,16 +105,13 @@ window.addEventListener('load', (event) => {
           FadeElems(loadingAnim, false);
         }
         else {
-          FadeElems(loadingOverlay, true);
-          FadeElems(notTimeBox, true);
+          FadeElems(loadingOverlay, true, true);
+          FadeElems(notTimeBox, true, true);
           FadeElems(loadingAnim, false);
         }
       });
     } else {
       //Signed out
-      FadeElems(loadingOverlay, true);
-      FadeElems(notTimeBox, false);
-      FadeElems(loadingAnim, true);
       signInAnonymously(auth)
         .then(() => {
           console.log("Signed in Anonymously");
@@ -309,10 +306,17 @@ window.addEventListener('load', (event) => {
     }).format(inputValue);
   }
 
-  function FadeElems(elem, show) {
+  function FadeElems(elem, show, isLoader) {
     if (show == true) {
-      elem.classList.remove("fadeOut");
-      elem.classList.add("fadeIn");
+      if (isLoader) {
+        if (elem.classList.contains("fadeOut")) {
+          elem.classList.remove("fadeOut");
+          elem.classList.add("fadeIn");
+        }
+      } else {
+        elem.classList.remove("fadeOut");
+        elem.classList.add("fadeIn");
+      }
     } else {
       elem.classList.remove("fadeIn");
       elem.classList.add("fadeOut");
