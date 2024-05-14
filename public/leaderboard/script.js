@@ -49,7 +49,6 @@ window.addEventListener('load', function () {
 
     //Detect login status
     onAuthStateChanged(auth, (user) => {
-        console.log(user);
         if (user) {
             if (user.isAnonymous === false) {
                 //Signed in admin

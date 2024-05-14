@@ -1,9 +1,8 @@
 // Import the functions you need from the SDKs you need
-import { initializeApp } from "https://www.gstatic.com/firebasejs/9.9.2/firebase-app.js";
-import { getDatabase, ref, onValue, get, child, update } from "https://www.gstatic.com/firebasejs/9.9.2/firebase-database.js";
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.11.1/firebase-app.js";
+import { getDatabase, ref, onValue, get, child, update } from "https://www.gstatic.com/firebasejs/10.11.1/firebase-database.js";
+import { getAuth, onAuthStateChanged, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.11.1/firebase-auth.js";
 
-// Your web app's Firebase configuration
-// For Firebase JS SDK v7.20.0 and later, measurementId is optional
 const firebaseConfig = {
   apiKey: "AIzaSyCkhBqKXXHQcgk9QYS7TTCY9I1kjx_bowk",
   authDomain: "cana-launchpad.firebaseapp.com",
@@ -15,31 +14,98 @@ const firebaseConfig = {
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
-// Initialize Realtime Database
 const database = getDatabase(app);
+const auth = getAuth(app);
+const projectsRef = ref(database, 'Projects/');
+const userAppRef = ref(database, 'UserApp/');
+
+function FadeElems(elem, show) {
+  if (show == true) {
+    elem.classList.remove("fadeOut");
+    elem.classList.add("fadeIn");
+  } else {
+    elem.classList.remove("fadeIn");
+    elem.classList.add("fadeOut");
+    elem.style = "";
+  }
+}
 
 window.addEventListener('load', (event) => {
-  //The two main ref points from db
-  const projectsRef = ref(database, 'Projects/');
-  const userAppRef = ref(database, 'UserApp/');
+  var loginPage = document.getElementById("login-page");
+  var loginButton = document.getElementById("login-button");
+  var loginEmail = document.getElementById("login-email");
+  var loginPassword = document.getElementById("login-password");
+  var loginPeek = loginPassword.nextElementSibling;
 
+  //Detect login status
+  onAuthStateChanged(auth, (user) => {
+    if (user) {
+      if (user.isAnonymous === false) {
+        //Signed in admin
+        loginPage.remove();
+        ContinueWithApp();
+      } else {
+        //No one is signed in, prompt login
+        loginPage.classList.add("pop-up");
+      }
+    } else {
+      //No one is signed in, prompt login
+      loginPage.classList.add("pop-up");
+    }
+  });
+
+  loginButton.addEventListener('click', function () {
+    loginEmail.classList.remove("login-error");
+    loginPassword.classList.remove("login-error");
+    loginButton.classList.add("login-click");
+
+    if (loginEmail.value.trim().length > 0 && loginPassword.value.trim().length > 0) {
+      signInWithEmailAndPassword(auth, loginEmail.value, loginPassword.value).catch((error) => {
+        console.log(error.message);
+        loginEmail.classList.add('login-error');
+        loginPassword.classList.add('login-error');
+        loginButton.classList.remove('login-click');
+      });
+    } else {
+      loginEmail.classList.add('login-error');
+      loginPassword.classList.add('login-error');
+      loginButton.classList.remove("login-click");
+    }
+  });
+
+  loginPeek.addEventListener('click', function () {
+    if (loginPeek.classList.contains('fa-eye')) {
+      loginPeek.className = "fa-solid fa-eye-slash eye-icon";
+      loginPassword.setAttribute('type', 'text');
+    } else {
+      loginPeek.className = "fa-solid fa-eye eye-icon";
+      loginPassword.setAttribute('type', 'password');
+    }
+  });
+});
+
+function ContinueWithApp() {
   //Get all project names from db then add to dropdown box
   var allProjectsArray = [];
   var currentProject = null;
   const projectDropdown = document.getElementById('project-dropdown');
 
-  get(child(userAppRef, "AllProjects")).then((snapshot) => {
-    allProjectsArray = snapshot.val().split(',');
+  get(projectsRef).then((snapshot) => {
+    if (snapshot.exists()){
+      snapshot.forEach((projects) => {
+        allProjectsArray.push(projects.key);
+      });
 
-    for (let i = 0; i < allProjectsArray.length; i++) {
-      var project = document.createElement('option');
-      project.value = allProjectsArray[i].trim();
-      project.innerHTML = allProjectsArray[i].trim();
-      projectDropdown.appendChild(project);
-    }
-
-    allProjectsArray = null;
-    loadCurrentProject();
+      for (let i = 0; i < allProjectsArray.length; i++) {
+        var project = document.createElement('option');
+        project.value = allProjectsArray[i].trim();
+        project.innerHTML = allProjectsArray[i].trim();
+        projectDropdown.appendChild(project);
+      }
+  
+      allProjectsArray = null;
+      loadCurrentProject();
+    } 
   });
 
   //Get the current project & sponsor name as well as current board values
@@ -120,28 +186,25 @@ window.addEventListener('load', (event) => {
   const userAppOverlay = document.getElementById("user-app");
   const leaderboardOverlay = document.getElementById("leaderboard");
 
-  //User Cancel
-  userAppCancel.addEventListener("click", (event) => {
-    userAppOverlay.classList.toggle('fade');
-    mainOverlay.classList.toggle('fade');
+  userAppCancel.addEventListener("click", () => {
+    FadeElems(userAppOverlay, false);
+    FadeElems(mainOverlay, false);    
   });
 
-  //User Submit
-  userAppSubmit.addEventListener("click", (event) => {
+  userAppSubmit.addEventListener("click", () => {
     var isUserAppUsable = (document.querySelector('input[name="userRadio"]:checked').value === "true");
 
     const updateUserApp = {};
     updateUserApp['isUsable'] = isUserAppUsable;
     update(userAppRef, updateUserApp);
 
-    userAppOverlay.classList.toggle('fade');
-    mainOverlay.classList.toggle('fade');
+    FadeElems(userAppOverlay, false);
+    FadeElems(mainOverlay, false); 
   });
 
-  //Leaderboard Done
-  leaderboardDone.addEventListener("click", (event) => {
-    leaderboardOverlay.classList.toggle('fade');
-    mainOverlay.classList.toggle('fade');
+  leaderboardDone.addEventListener("click", () => {
+    FadeElems(leaderboardOverlay, false);
+    FadeElems(mainOverlay, false); 
   });
 
   //Add Event listeners for each button on main page
@@ -150,9 +213,10 @@ window.addEventListener('load', (event) => {
   const submitSponsorBtn = document.getElementById('btnSponsorName');
   const submitBoardsBtn = document.getElementById('btnBoardChanges');
 
-  userAppBtn.addEventListener("click", (event) => {
-    mainOverlay.classList.toggle('fade');
-    userAppOverlay.classList.toggle('fade');
+  userAppBtn.addEventListener("click", () => {
+    FadeElems(mainOverlay, true);
+    FadeElems(userAppOverlay, true); 
+    userAppOverlay.style.display = 'grid';
   });
 
   //Add Event listeners for each of the cancel and delete btns on the leaderboard page
@@ -264,30 +328,25 @@ window.addEventListener('load', (event) => {
     }
   }
 
-  leaderboardBtn.addEventListener("click", (event) => {
-    mainOverlay.classList.toggle('fade');
-    leaderboardOverlay.classList.toggle('fade');
+  leaderboardBtn.addEventListener("click", () => {
+    FadeElems(mainOverlay, true);
+    FadeElems(leaderboardOverlay, true);
+    leaderboardOverlay.style.display = 'grid';
 
     var prayerPartners = document.getElementById("prayerPartners");
     var donorsPledgers = document.getElementById("donorsPledgers");
     var teamMembers = document.getElementById("teamMembers");
 
-    (function removeOldNames() {
-      //Clear prayer board
-      while (prayerPartners.firstChild) {
-        prayerPartners.removeChild(prayerPartners.lastChild);
-      }
-
-      //Clear donor board
-      while (donorsPledgers.firstChild) {
-        donorsPledgers.removeChild(donorsPledgers.lastChild);
-      }
-
-      //Clear team board
-      while (teamMembers.firstChild) {
-        teamMembers.removeChild(teamMembers.lastChild);
-      }
-    })();
+    //Clear all boards
+    while (prayerPartners.firstChild) {
+      prayerPartners.removeChild(prayerPartners.lastChild);
+    }
+    while (donorsPledgers.firstChild) {
+      donorsPledgers.removeChild(donorsPledgers.lastChild);
+    }
+    while (teamMembers.firstChild) {
+      teamMembers.removeChild(teamMembers.lastChild);
+    }
 
     //Load the names from each board from DB
     //Prayer Board
@@ -406,4 +465,4 @@ window.addEventListener('load', (event) => {
       alert(userError);
     });
   });
-});
+}
