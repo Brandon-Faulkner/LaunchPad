@@ -1,9 +1,9 @@
 // Import the functions you need from the SDKs you need
-import { initializeApp } from "https://www.gstatic.com/firebasejs/9.9.2/firebase-app.js";
-import { getDatabase, ref, onValue, set, child } from "https://www.gstatic.com/firebasejs/9.9.2/firebase-database.js";
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.11.1/firebase-app.js";
+import { getDatabase, ref, onValue, set, child } from "https://www.gstatic.com/firebasejs/10.11.1/firebase-database.js";
+import { getAuth, onAuthStateChanged, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.11.1/firebase-auth.js";
 
 // Your web app's Firebase configuration
-// For Firebase JS SDK v7.20.0 and later, measurementId is optional
 const firebaseConfig = {
     apiKey: "AIzaSyCkhBqKXXHQcgk9QYS7TTCY9I1kjx_bowk",
     authDomain: "cana-launchpad.firebaseapp.com",
@@ -11,71 +11,146 @@ const firebaseConfig = {
     storageBucket: "cana-launchpad.appspot.com",
     messagingSenderId: "47186518351",
     appId: "1:47186518351:web:d40c2d357ead5636b8653a"
-  };
+};
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
-// Initialize Realtime Database
 const database = getDatabase(app);
+const auth = getAuth(app);
+
+function FadeInOut(elem, show) {
+    if (show == true) {
+        elem.classList.remove("fadeOut");
+        elem.style = "display: flex";
+        elem.classList.add("fadeIn");
+    } else {
+        elem.classList.remove("fadeIn");
+        elem.classList.add("fadeOut");
+        setTimeout(() => {
+            elem.style = "display: none";
+        }, 200);
+    }
+}
 
 window.addEventListener('load', function () {
+    //Detect users prefered color scheme
+    const darkModeToggle = document.getElementById("dark-mode-toggle");
+    const localTheme = localStorage.getItem("theme");
+    const darkTheme = window.matchMedia("(prefers-color-scheme: dark)");
+    const currTheme = GetThemeString(localTheme, darkTheme);
+    document.querySelector("html").setAttribute("data-theme", currTheme);
+    currTheme === "dark" ? darkModeToggle.className = "fa-solid fa-lightbulb" : darkModeToggle.className = "fa-regular fa-lightbulb";
+    document.querySelector('meta[name="theme-color"]').setAttribute("content", currTheme === "dark" ? "#242424" : "#fff");
+
+    function GetThemeString(localTheme, darkTheme) {
+        if (localTheme !== null) return localTheme;
+        if (darkTheme.matches) return "dark";
+        return "light";
+    }
+
+    darkModeToggle.addEventListener('click', function () {
+        const newTheme = darkModeToggle.classList.contains("fa-solid") ? "light" : "dark";
+        localStorage.setItem("theme", newTheme);
+        document.querySelector("html").setAttribute("data-theme", newTheme);
+        newTheme === "dark" ? darkModeToggle.className = "fa-solid fa-lightbulb" : darkModeToggle.className = "fa-regular fa-lightbulb";
+        document.querySelector('meta[name="theme-color"]').setAttribute("content", newTheme === "dark" ? "#242424" : "#fff");
+    });
+
+    var loginPage = document.getElementById("login-page");
+    var loginButton = document.getElementById("login-button");
+    var loginEmail = document.getElementById("login-email");
+    var loginPassword = document.getElementById("login-password");
+    var loginPeek = loginPassword.nextElementSibling;
+
+    //Detect login status
+    onAuthStateChanged(auth, (user) => {
+        if (user) {
+            if (user.isAnonymous === false) {
+                //Signed in admin
+                loginPage.remove();
+                ContinueWithApp();
+            } else {
+                //No one is signed in, prompt login
+                loginPage.classList.add("pop-up");
+            }
+        } else {
+            //No one is signed in, prompt login
+            loginPage.classList.add("pop-up");
+        }
+    });
+
+    loginButton.addEventListener('click', function () {
+        loginEmail.classList.remove("login-error");
+        loginPassword.classList.remove("login-error");
+        loginButton.classList.add("login-click");
+
+        if (loginEmail.value.trim().length > 0 && loginPassword.value.trim().length > 0) {
+            signInWithEmailAndPassword(auth, loginEmail.value, loginPassword.value).catch((error) => {
+                loginEmail.classList.add('login-error');
+                loginPassword.classList.add('login-error');
+                loginButton.classList.remove('login-click');
+            });
+        } else {
+            loginEmail.classList.add('login-error');
+            loginPassword.classList.add('login-error');
+            loginButton.classList.remove("login-click");
+        }
+    });
+
+    loginPeek.addEventListener('click', function () {
+        if (loginPeek.classList.contains('fa-eye')) {
+            loginPeek.className = "fa-solid fa-eye-slash eye-icon";
+            loginPassword.setAttribute('type', 'text');
+        } else {
+            loginPeek.className = "fa-solid fa-eye eye-icon";
+            loginPassword.setAttribute('type', 'password');
+        }
+    });
+});
+
+function ContinueWithApp() {
     //Get reference to questions path from db
     const questionsRef = ref(database, "UserApp/Questions/");
-    const mainBox = document.getElementById('main-box');
+    const questionHolder = document.getElementById('question-holder');
 
     //Get the updated questions and add them to screen
     onValue(questionsRef, (snapshot) => {
-
-        removeOldQuestions();
+        while (questionHolder.children.length !== 0) {
+            document.getElementById("questions").remove();
+        }
 
         snapshot.forEach((childSnapshot) => {
-            const questionsBox = document.createElement("button");
-            questionsBox.setAttribute('type', 'button');
-            questionsBox.setAttribute('id', 'questions');
-            questionsBox.className = "light-box";
-            questionsBox.setAttribute('name', childSnapshot.key);
-            questionsBox.innerHTML = childSnapshot.val();
-            mainBox.appendChild(questionsBox);
+            const question = document.createElement("h3");
+            question.setAttribute('id', 'questions');
+            question.setAttribute('name', childSnapshot.key);
+            question.textContent = childSnapshot.val();
+            questionHolder.appendChild(question);
         });
     });
 
-    function removeOldQuestions() {
-        while (mainBox.children.length !== 0) {
-            document.getElementById("questions").remove();
-        }
-    }
-
     const mainOverlay = document.getElementById('main-overlay');
-    const questionsBox = document.getElementById('questions-box');
-    const questionText = document.getElementById('question-text');
-    const questionCancel = document.getElementById('btnQuestionCancel');
-    const questionDelete = document.getElementById('btnQuestionDelete');
-    var targetName = null
+    const overlayText = document.getElementById('overlay-text');
+    const overlayCancel = document.getElementById('btnQuestionCancel');
+    const overlayDelete = document.getElementById('btnQuestionDelete');
+    var targetName = null;
 
     //Open the main overlay to show the selected question
-    mainBox.addEventListener('click', function (event) {
+    questionHolder.addEventListener('click', function (event) {
         if (event.target && event.target.id == 'questions') {
-            mainOverlay.classList.toggle('fade');
-            questionsBox.classList.toggle('fade');
-            questionText.textContent = event.target.textContent 
-            targetName = event.target.name;          
+            FadeInOut(mainOverlay, true);
+            overlayText.textContent = event.target.textContent;
+            targetName = event.target.getAttribute('name');
         }
     });
 
     //Cancel the removal of the question
-    questionCancel.addEventListener('click', function () {
-        if (mainOverlay.classList.contains('fade')) {
-            mainOverlay.classList.toggle('fade');
-            questionsBox.classList.toggle('fade');
-        }
+    overlayCancel.addEventListener('click', function () {
+        FadeInOut(mainOverlay, false);
     });
 
     //Remove the question from db
-    questionDelete.addEventListener('click', function () {
+    overlayDelete.addEventListener('click', function () {
         set(child(questionsRef, targetName), null);
-        if (mainOverlay.classList.contains('fade')) {
-            mainOverlay.classList.toggle('fade');
-            questionsBox.classList.toggle('fade');
-        }
+        FadeInOut(mainOverlay, false);
     });
-});
+}

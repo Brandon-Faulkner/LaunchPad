@@ -1,39 +1,79 @@
 <!DOCTYPE html>
-<html lang="en-us">
+<html lang="en-us" data-theme="dark">
 
 <head>
     <title>LaunchPad Questions</title>
-    <link href='https://fonts.googleapis.com/css?family=Open Sans' rel='stylesheet'>
+    <link href="https://fonts.cdnfonts.com/css/futura-pt" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+        integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link rel="stylesheet" href="style.css">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <meta name="apple-mobile-web-app-title" content="Cana LaunchPad">
+    <meta name="application-name" content="Cana LaunchPad">
+    <meta name="description"
+        content="Web App used to promote new ministry programs and provide support for them in an engaging way.">
+    <link rel="apple-touch-icon" sizes="180x180" href="../resources/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="../resources/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="../resources/favicon-16x16.png">
+    <link rel="manifest" href="../site.webmanifest">
+    <link rel="mask-icon" href="../resources/safari-pinned-tab.svg" color="#242424">
+    <meta name="msapplication-TileColor" content="#00aa63">
+    <meta name="theme-color" content="#242424">
 </head>
 
 <body>
-    <div id="main" class="main">
+    <div id="login-page">
+        <div id="login-wrapper">
+            <div id="login-title">Login to Continue</div>
+            <div class="login-field">
+                <input id="login-email" type="text" placeholder="Email Address" required>
+            </div>
+            <div class="login-field">
+                <input id="login-password" type="password" placeholder="Password" required>
+                <span class="fa-solid fa-eye eye-icon"></span>
+            </div>
+            <button id="login-button">Log In</button>
+        </div>
+    </div>
+
+    <div id="main">
         <div id="main-title">
             <div class="grid-titles">
                 <div class="titles">
-                    <h1>Questions</h1>
+                    <h1>User Questions</h1>
+                    <i id="dark-mode-toggle" class="fas fa-lightbulb" title="Toggle Dark Mode"></i>
+                    <div id="menu" title="Admin Menu">
+                        <input type="checkbox" />
+                        <div id="menu-toggle"></div>
+                        <div id="menu-container">
+                            <a href="../options" title="Admin Options"><i class="fas fa-gear"></i></a>
+                            <a href="../user" title="User"><i class="fas fa-circle-user"></i></a>
+                            <a href="../leaderboard" title="Admin Leaderboard"><i class="fas fa-chart-simple"></i></a>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
-        <div id="main-box">           
+        <div id="main-box">
+            <div id="question-holder">
+            </div>
         </div>
         <div id="main-overlay">
-            <div id="questions-box">
-                <h1 id="overlay-title">Question</h1>
-                <div id="question-text-box">
-                    <h3 id="question-text" style="margin:10px">Default</h3>
+            <div id="overlay-mainbox">
+                <h2 id="overlay-title">Question</h2>
+                <div id="overlay-textbox">
+                    <p id="overlay-text">Default</p>
                 </div>
                 <div id="overlay-buttons-holder">
-                    <button id="btnQuestionCancel" class="overlay-buttons cancel" type="button">CANCEL</button>
-                    <button id="btnQuestionDelete" class="overlay-buttons delete" type="button">DELETE</button>
+                    <button id="btnQuestionCancel" class="button overlay-cancel" type="button">Cancel</button>
+                    <button id="btnQuestionDelete" class="button overlay-delete" type="button">Delete</button>
                 </div>
             </div>
         </div>
     </div>
 
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <script type="module" src="script.js"></script>
 </body>
+
 </html>
