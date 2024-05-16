@@ -30,7 +30,70 @@ function FadeElems(elem, show) {
   }
 }
 
+function ShowNotifToast(title, message, statusColor, isTimed, seconds) {
+  const toastElem = document.querySelector('.toast');
+  const toastMessage = document.querySelector('.toast-message');
+  const toastProgress = document.querySelector('.toast-progress');
+  const toastClose = document.querySelector('.toast .close');
+
+  //Check if toast is active, wait if it is
+  if (toastElem.classList.contains('active')) {
+    setTimeout(() => {
+      ShowNotifToast(title, message, statusColor, isTimed, seconds);
+    }, 1000);
+  } else {
+    //Change --toast-status css var to statusColor
+    toastElem.style.setProperty('--toast-status', statusColor);
+
+    //Update toast title
+    toastMessage.children[0].textContent = title;
+    toastMessage.children[1].textContent = message;
+
+    //Now show the toast
+    toastElem.classList.add('active');
+
+    //Show the progress bar if isTimed is true
+    if (isTimed === true) {
+      toastProgress.style.setProperty('--toast-duration', seconds + 's');
+      toastProgress.classList.add('active');
+
+      toastProgress.addEventListener("animationend", function () {
+        toastElem.classList.remove('active');
+        toastProgress.classList.remove('active');
+      });
+    }
+  }
+
+  toastClose.addEventListener('click', function () {
+    toastProgress.classList.remove('active');
+    toastElem.classList.remove('active');
+  });
+}
+
 window.addEventListener('load', (event) => {
+  //Detect users prefered color scheme
+  const darkModeToggle = document.getElementById("dark-mode-toggle");
+  const localTheme = localStorage.getItem("theme");
+  const darkTheme = window.matchMedia("(prefers-color-scheme: dark)");
+  const currTheme = GetThemeString(localTheme, darkTheme);
+  document.querySelector("html").setAttribute("data-theme", currTheme);
+  currTheme === "dark" ? darkModeToggle.className = "fa-solid fa-lightbulb" : darkModeToggle.className = "fa-regular fa-lightbulb";
+  document.querySelector('meta[name="theme-color"]').setAttribute("content", currTheme === "dark" ? "#242424" : "#fff");
+
+  function GetThemeString(localTheme, darkTheme) {
+    if (localTheme !== null) return localTheme;
+    if (darkTheme.matches) return "dark";
+    return "light";
+  }
+
+  darkModeToggle.addEventListener('click', function () {
+    const newTheme = darkModeToggle.classList.contains("fa-solid") ? "light" : "dark";
+    localStorage.setItem("theme", newTheme);
+    document.querySelector("html").setAttribute("data-theme", newTheme);
+    newTheme === "dark" ? darkModeToggle.className = "fa-solid fa-lightbulb" : darkModeToggle.className = "fa-regular fa-lightbulb";
+    document.querySelector('meta[name="theme-color"]').setAttribute("content", newTheme === "dark" ? "#242424" : "#fff");
+  });
+
   var loginPage = document.getElementById("login-page");
   var loginButton = document.getElementById("login-button");
   var loginEmail = document.getElementById("login-email");
@@ -70,6 +133,7 @@ window.addEventListener('load', (event) => {
       loginEmail.classList.add('login-error');
       loginPassword.classList.add('login-error');
       loginButton.classList.remove("login-click");
+      ShowNotifToast("Invalid Login", "Only Admins have access to this page. If you are an admin, please try to login again.", "var(--color-red)", true, 5);
     }
   });
 
@@ -91,7 +155,7 @@ function ContinueWithApp() {
   const projectDropdown = document.getElementById('project-dropdown');
 
   get(projectsRef).then((snapshot) => {
-    if (snapshot.exists()){
+    if (snapshot.exists()) {
       snapshot.forEach((projects) => {
         allProjectsArray.push(projects.key);
       });
@@ -102,10 +166,10 @@ function ContinueWithApp() {
         project.innerHTML = allProjectsArray[i].trim();
         projectDropdown.appendChild(project);
       }
-  
+
       allProjectsArray = null;
       loadCurrentProject();
-    } 
+    }
   });
 
   //Get the current project & sponsor name as well as current board values
@@ -188,7 +252,7 @@ function ContinueWithApp() {
 
   userAppCancel.addEventListener("click", () => {
     FadeElems(userAppOverlay, false);
-    FadeElems(mainOverlay, false);    
+    FadeElems(mainOverlay, false);
   });
 
   userAppSubmit.addEventListener("click", () => {
@@ -199,12 +263,13 @@ function ContinueWithApp() {
     update(userAppRef, updateUserApp);
 
     FadeElems(userAppOverlay, false);
-    FadeElems(mainOverlay, false); 
+    FadeElems(mainOverlay, false);
+    ShowNotifToast("User App Changed", "User app has been turned " + isUserAppUsable === "true" ? "on." : "off.", "var(--color-green)", true, 5);
   });
 
   leaderboardDone.addEventListener("click", () => {
     FadeElems(leaderboardOverlay, false);
-    FadeElems(mainOverlay, false); 
+    FadeElems(mainOverlay, false);
   });
 
   //Add Event listeners for each button on main page
@@ -215,7 +280,7 @@ function ContinueWithApp() {
 
   userAppBtn.addEventListener("click", () => {
     FadeElems(mainOverlay, true);
-    FadeElems(userAppOverlay, true); 
+    FadeElems(userAppOverlay, true);
     userAppOverlay.style.display = 'grid';
   });
 
@@ -281,6 +346,7 @@ function ContinueWithApp() {
           }
 
           update(child(projectsRef, projectDropdown.value + "/Board:PrayerPartners/Names/"), updatePrayerPartner);
+          ShowNotifToast("Names Removed", "The selected names have been removed from the Prayer Partner Board.", "var(--color-green)", true, 5);
         }
         break;
       case "donor":
@@ -302,6 +368,7 @@ function ContinueWithApp() {
           }
 
           update(child(projectsRef, projectDropdown.value + "/Board:Donors/Names/"), updateDonorsPledgers);
+          ShowNotifToast("Names Removed", "The selected names have been removed from the Donor Board.", "var(--color-green)", true, 5);
         }
         break;
       case "team":
@@ -323,6 +390,7 @@ function ContinueWithApp() {
           }
 
           update(child(projectsRef, projectDropdown.value + "/Board:TeamMembers/Names/"), updateTeamMembers);
+          ShowNotifToast("Names Removed", "The selected names have been removed from the Team Member Board.", "var(--color-green)", true, 5);
         }
         break;
     }
@@ -421,17 +489,13 @@ function ContinueWithApp() {
       const updateProjectSponsor = {};
       updateProjectSponsor["Sponsor"] = sponsorName;
       update(child(projectsRef, projectDropdown.value + "/"), updateProjectSponsor).then(() => {
-        //Show the success notification if successful
-        var notification = document.getElementById("notification");
-        notification.style.animation = 'none';
-        notification.offsetHeight;
-        notification.style.animation = null;
-        notification.style = "animation: fade-in-out 3.5s ease-in-out forwards;";
+        //Show the success toast
+        ShowNotifToast("Sponsor Submitted", "The names of the sponsors you entered were successfully submitted.", "var(--color-green)", true, 5);
       }).catch((projectError) => {
-        alert(projectError);
+        ShowNotifToast("Error With Submission", projectError.message, "var(--color-red)", true, 5);
       });
     }).catch((userError) => {
-      alert(userError);
+      ShowNotifToast("Error With Submission", userError.message, "var(--color-red)", true, 5);
     });
   });
 
@@ -452,17 +516,13 @@ function ContinueWithApp() {
       updateProjectBoards["/Board:PrayerPartners/isBoardOn"] = prayerBoardValue;
       updateProjectBoards["/Board:TeamMembers/isBoardOn"] = teamBoardValue;
       update(child(projectsRef, projectDropdown.value), updateProjectBoards).then(() => {
-        //Show the success notification if successful
-        var notification = document.getElementById("notification");
-        notification.style.animation = 'none';
-        notification.offsetHeight;
-        notification.style.animation = null;
-        notification.style = "animation: fade-in-out 3.5s ease-in-out forwards;";
+        //Show the success toast
+        ShowNotifToast("Board Changes Submitted", "The options you selected for the boards were submitted successfully.", "var(--color-green)", true, 5);
       }).catch((projectError) => {
-        alert(projectError);
+        ShowNotifToast("Error With Submission", projectError.message, "var(--color-red)", true, 5);
       });
     }).catch((userError) => {
-      alert(userError);
+      ShowNotifToast("Error With Submission", userError.message, "var(--color-red)", true, 5);
     });
   });
 }

@@ -30,22 +30,26 @@
             <div id="login-title">Login to Continue</div>
             <div class="login-field">
                 <input id="login-email" type="text" placeholder="Email Address" required>
-              </div>
-              <div class="login-field">
+            </div>
+            <div class="login-field">
                 <input id="login-password" type="password" placeholder="Password" required>
                 <span class="fa-solid fa-eye eye-icon"></span>
-              </div>
-              <button id="login-button">Log In</button>
+            </div>
+            <button id="login-button">Log In</button>
         </div>
-      </div>
+    </div>
 
-    <section id="notification" class="message-success">
-        <header></header>
-        <i></i>
-        <h2>
-            <span style="color:#fff">Successfully Submitted Changes!</span>
-        </h2>
-    </section>
+    <div class="toast">
+        <div class="toast-content">
+            <i class="fa-solid fa-bell bell"></i>
+            <div class="toast-message">
+                <span class="toast-title">Notification Title</span>
+                <span>Notification Message.</span>
+            </div>
+        </div>
+        <i class="fa-solid fa-xmark close"></i>
+        <div class="toast-progress"></div>
+    </div>
 
     <div id="main" class="main">
         <div id="owner" class="grid-dark-box">
@@ -53,6 +57,16 @@
                 <div class="line"></div>
                 <div class="titles">
                     <h1>Project Owner</h1>
+                    <i id="dark-mode-toggle" class="fas fa-lightbulb" title="Toggle Dark Mode"></i>
+                    <div id="menu" title="Admin Menu">
+                        <input type="checkbox" />
+                        <div id="menu-toggle"></div>
+                        <div id="menu-container">
+                            <a href="../user" title="User"><i class="fas fa-circle-user"></i></a>
+                            <a href="../questions" title=" Admin Questions"><i class="fas fa-circle-question"></i></a>
+                            <a href="../leaderboard" title="Admin Leaderboard"><i class="fas fa-chart-simple"></i></a>
+                        </div>
+                    </div>
                 </div>
             </div>
             <div class="light-box">
@@ -146,8 +160,10 @@
                                 <h1>Prayer Partners</h1>
                             </div>
                         </div>
-                        <button id="btnCancel0" type="button" name="prayer" class="button leaderboard-cancel">CANCEL</button>
-                        <button id="btnDelete0" type="button" name="prayer" class="button leaderboard-delete">DELETE</button>
+                        <button id="btnCancel0" type="button" name="prayer"
+                            class="button leaderboard-cancel">Cancel</button>
+                        <button id="btnDelete0" type="button" name="prayer"
+                            class="button leaderboard-delete">Remove</button>
                     </div>
                     <div class="leaderboard-light-box" id="prayerPartners">
                     </div>
@@ -160,8 +176,10 @@
                                 <h1>Donors/Pledgers</h1>
                             </div>
                         </div>
-                        <button id="btnCancel1" type="button" name="donor" class="button leaderboard-cancel">CANCEL</button>
-                        <button id="btnDelete1" type="button" name="donor" class="button leaderboard-delete">DELETE</button>
+                        <button id="btnCancel1" type="button" name="donor"
+                            class="button leaderboard-cancel">Cancel</button>
+                        <button id="btnDelete1" type="button" name="donor"
+                            class="button leaderboard-delete">Remove</button>
                     </div>
                     <div class="leaderboard-light-box" id="donorsPledgers">
 
@@ -175,15 +193,17 @@
                                 <h1>Team Members</h1>
                             </div>
                         </div>
-                        <button id="btnCancel2" type="button" name="team" class="button leaderboard-cancel">CANCEL</button>
-                        <button id="btnDelete2" type="button" name="team" class="button leaderboard-delete">DELETE</button>
+                        <button id="btnCancel2" type="button" name="team"
+                            class="button leaderboard-cancel">Cancel</button>
+                        <button id="btnDelete2" type="button" name="team"
+                            class="button leaderboard-delete">Remove</button>
                     </div>
                     <div class="leaderboard-light-box" id="teamMembers">
 
                     </div>
                 </div>
                 <div id="overlay-buttons-holder">
-                    <button id="btnLeaderboardOk" class="button overlay-submit" type="button">DONE</button>
+                    <button id="btnLeaderboardOk" class="button overlay-submit" type="button">Done</button>
                 </div>
             </div>
         </div>
