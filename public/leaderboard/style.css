@@ -44,6 +44,16 @@ body {
     color: var(--color-fg);
 }
 
+@media screen and (orientation: landscape) {
+    body {
+        transform: rotate(90deg) translate(-100vw, 0);
+        transform-origin: bottom left;
+        width: 100vh;
+        height: 100vw;
+        margin: 0;
+    }
+}
+
 h1 {
     font-size: calc(1vh + 2vw);
     display: inline-flex;
@@ -315,7 +325,7 @@ form .field input:focus::placeholder {
     position: relative;
     display: inline-flex;
     align-items: center;
-    color: var(--color-alt);
+    color: var(--color-dark);
     cursor: pointer;
 }
 

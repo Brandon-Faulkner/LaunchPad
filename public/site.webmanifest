@@ -18,5 +18,5 @@
     "background_color": "#242424",
     "start_url": "https://cana-launchpad.web.app",
     "display": "standalone",
-    "orientation": "any"
+    "orientation": "portrait"
 }
