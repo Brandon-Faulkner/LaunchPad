@@ -1,7 +1,7 @@
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.11.1/firebase-app.js";
 import { getDatabase, ref, onValue, get, child, update } from "https://www.gstatic.com/firebasejs/10.11.1/firebase-database.js";
-import { getAuth, onAuthStateChanged, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.11.1/firebase-auth.js";
+import { getAuth, onAuthStateChanged, signInWithEmailAndPassword, signOut } from "https://www.gstatic.com/firebasejs/10.11.1/firebase-auth.js";
 
 const firebaseConfig = {
   apiKey: "AIzaSyCkhBqKXXHQcgk9QYS7TTCY9I1kjx_bowk",
@@ -99,6 +99,7 @@ window.addEventListener('load', (event) => {
   var loginEmail = document.getElementById("login-email");
   var loginPassword = document.getElementById("login-password");
   var loginPeek = loginPassword.nextElementSibling;
+  var signOutBtn = document.querySelector('[title="Sign Out"]');
 
   //Detect login status
   onAuthStateChanged(auth, (user) => {
@@ -144,6 +145,17 @@ window.addEventListener('load', (event) => {
     } else {
       loginPeek.className = "fa-solid fa-eye eye-icon";
       loginPassword.setAttribute('type', 'password');
+    }
+  });
+
+  signOutBtn.addEventListener('click', function () {
+    if (auth?.currentUser.isAnonymous === false) {
+      signOut(auth).then(() => {
+        location.reload();
+      }).catch((error) => {
+        console.log(error.code + ": " + error.message);
+        ShowNotifToast("Sign Out Error", "There was an issue with signing you out. Please try again.", "var(--red)", true, 5);
+      });
     }
   });
 });
@@ -264,7 +276,7 @@ function ContinueWithApp() {
 
     FadeElems(userAppOverlay, false);
     FadeElems(mainOverlay, false);
-    ShowNotifToast("User App Changed", "User app has been turned " + isUserAppUsable === "true" ? "on." : "off.", "var(--color-green)", true, 5);
+    ShowNotifToast("User App Changed", isUserAppUsable === true ? "User app has been turned on." : "User app has been turned off.", "var(--color-green)", true, 5);
   });
 
   leaderboardDone.addEventListener("click", () => {

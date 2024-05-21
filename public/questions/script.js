@@ -1,7 +1,7 @@
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.11.1/firebase-app.js";
 import { getDatabase, ref, onValue, set, child } from "https://www.gstatic.com/firebasejs/10.11.1/firebase-database.js";
-import { getAuth, onAuthStateChanged, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.11.1/firebase-auth.js";
+import { getAuth, onAuthStateChanged, signInWithEmailAndPassword, signOut } from "https://www.gstatic.com/firebasejs/10.11.1/firebase-auth.js";
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
@@ -61,6 +61,7 @@ window.addEventListener('load', function () {
     var loginEmail = document.getElementById("login-email");
     var loginPassword = document.getElementById("login-password");
     var loginPeek = loginPassword.nextElementSibling;
+    var signOutBtn = document.querySelector('[title="Sign Out"]');
 
     //Detect login status
     onAuthStateChanged(auth, (user) => {
@@ -106,12 +107,24 @@ window.addEventListener('load', function () {
             loginPassword.setAttribute('type', 'password');
         }
     });
+
+    signOutBtn.addEventListener('click', function () {
+        if (auth?.currentUser.isAnonymous === false) {
+            signOut(auth).then(() => {
+                location.reload();
+            }).catch((error) => {
+                console.log(error.code + ": " + error.message);
+                alert("There was an issue with signing you out. Please try again.");
+            });
+        }
+    });
 });
 
 function ContinueWithApp() {
     //Get reference to questions path from db
     const questionsRef = ref(database, "UserApp/Questions/");
     const questionHolder = document.getElementById('question-holder');
+    const noQuestionsLabel = document.getElementById('no-questions');
 
     //Get the updated questions and add them to screen
     onValue(questionsRef, (snapshot) => {
@@ -126,6 +139,15 @@ function ContinueWithApp() {
             question.textContent = childSnapshot.val();
             questionHolder.appendChild(question);
         });
+
+        //Check if there are questions to show/hide the no question label
+        if (questionHolder.children.length === 0) {
+            FadeInOut(noQuestionsLabel, true);
+            FadeInOut(questionHolder, false);
+        } else {
+            FadeInOut(noQuestionsLabel, false);
+            FadeInOut(questionHolder, true);
+        }
     });
 
     const mainOverlay = document.getElementById('main-overlay');

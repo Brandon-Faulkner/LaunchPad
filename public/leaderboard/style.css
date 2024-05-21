@@ -1,15 +1,39 @@
+/*#region MAIN STYLES */
 :root {
-    --color-bg: #242424;
-    --color-alt: #2d2d2d;
-    --color-darkbox: #242424;
-    --color-lightbox: #292929;
-    --color-fg: #fff;
-    --color-lightwhite: rgba(255, 255, 255, .05);
+    --color-white: #fff;
+    --color-white-darkbox: #f2f2f2;
+    --color-white-lightbox: #f7f7f7;
+    --color-white-overlay: #fffffffa;
+    --color-white-yes: #24242440;
+    --color-dark: #242424;
+    --color-dark-darkbox: #242424;
+    --color-dark-lightbox: #292929;
+    --color-dark-overlay: #2e2e2efa;
+    --color-dark-yes: #ffffff40;
+    --color-lightwhite: #ffffff0d;
     --color-green: #00aa63;
     --color-alt-green: #4fc3a1;
-    --color-red: #d53d3d;
+    --color-red: #f04545;
     --border-radius: 8px;
     --box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
+}
+
+[data-theme="light"] {
+    --color-bg: var(--color-white);
+    --color-fg: var(--color-dark);
+    --color-darkbox: var(--color-white-darkbox);
+    --color-lightbox: var(--color-white-lightbox);
+    --color-overlay: var(--color-white-overlay);
+    --color-label-yes: var(--color-white-yes);
+}
+
+[data-theme="dark"] {
+    --color-bg: var(--color-dark);
+    --color-fg: var(--color-white);
+    --color-darkbox: var(--color-dark-darkbox);
+    --color-lightbox: var(--color-dark-lightbox);
+    --color-overlay: var(--color-dark-overlay);
+    --color-label-yes: var(--color-dark-yes);
 }
 
 body {
@@ -50,7 +74,7 @@ p {
 
 .grid-titles {
     display: grid;
-    grid-template-columns: 5% 94.5%;
+    grid-template-columns: 2.5% 97.5%;
     grid-template-rows: 100%;
     width: 98.75%;
     height: 100%;
@@ -68,7 +92,9 @@ p {
 }
 
 .titles {
+    display: inline-flex;
     justify-content: flex-start;
+    align-items: center;
     padding-left: 1%;
 }
 
@@ -129,7 +155,9 @@ p {
     grid-template-rows: 100%;
 }
 
-#donor-title, #prayer-title, #team-title {
+#donor-title,
+#prayer-title,
+#team-title {
     margin: 5px 10px 0 10px;
     background-color: transparent;
     border-color: var(--color-green);
@@ -149,7 +177,9 @@ p {
     box-shadow: var(--box-shadow);
 }
 
-#donor-total, #prayer-total, #team-total {
+#donor-total,
+#prayer-total,
+#team-total {
     padding: 0 5px;
     font-weight: 400;
     opacity: 0;
@@ -183,6 +213,8 @@ p {
         opacity: 0;
     }
 }
+
+/*#endregion MAIN STYLES */
 
 /*#region LOGIN SCREEN*/
 #login-page {
@@ -333,4 +365,172 @@ form .field input:focus::placeholder {
         transform: rotate(360deg);
     }
 }
+
 /*#endregion LOGIN SCREEN*/
+
+/*#region MENU*/
+#menu {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transform: rotate(180deg);
+    margin: 5px 5px 0 auto;
+    z-index: 799;
+}
+
+#menu-toggle {
+    margin: auto;
+    height: 5vh;
+    aspect-ratio: 1/1;
+    max-height: 40px;
+    z-index: 3;
+    border-radius: 100%;
+    box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.4);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    animation: menu-toggle-reverse 0.4s ease-out forwards;
+}
+
+#menu:hover #menu-toggle::before,
+#menu:hover #menu-toggle::after {
+    background: var(--color-green);
+}
+
+#menu-toggle::before,
+#menu-toggle::after {
+    content: "";
+    display: block;
+    position: absolute;
+    border-radius: 4px;
+    background: var(--color-fg);
+    transition: background .2s linear;
+}
+
+#menu-toggle::before {
+    width: 4px;
+    height: 18px;
+}
+
+#menu-toggle::after {
+    width: 18px;
+    height: 4px;
+}
+
+#menu-container {
+    width: 32px;
+    height: 200px;
+    border-radius: 64px;
+    position: absolute;
+    background: var(--color-green);
+    z-index: 2;
+    padding: 0.5rem 0.5rem;
+    box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.4);
+    opacity: 0;
+    top: -150px;
+    display: flex;
+    pointer-events: none;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+    transition: opacity 0.2s ease-in, top 0.2s ease-in, width 0.1s ease-in;
+}
+
+#menu-container a {
+    color: var(--color-white);
+    opacity: 0.8;
+    transform: rotate(180deg);
+    font-size: 24px;
+}
+
+#menu-container a:hover {
+    transition: 0.2s;
+    opacity: 1;
+    color: var(--color-dark);
+}
+
+#menu input {
+    height: 100%;
+    width: 100%;
+    cursor: pointer;
+    position: absolute;
+    z-index: 5;
+    opacity: 0;
+}
+
+#menu input:checked~#menu-toggle {
+    animation: menu-toggle 0.4s ease-out forwards;
+}
+
+#menu input:checked~#menu-container {
+    width: 32px;
+    height: 200px;
+    animation: menu-container 0.4s ease-out forwards 0.1s;
+    top: -225px;
+    opacity: 1;
+    pointer-events: all;
+}
+
+@keyframes menu-toggle {
+    0% {
+        transform: rotate(0) scale(1);
+    }
+
+    20% {
+        transform: rotate(60deg) scale(0.93);
+    }
+
+    55% {
+        transform: rotate(35deg) scale(0.97);
+    }
+
+    80% {
+        transform: rotate(48deg) scale(0.94);
+    }
+
+    100% {
+        transform: rotate(45deg) scale(0.95);
+    }
+}
+
+@keyframes menu-toggle-reverse {
+    0% {
+        transform: rotate(45deg) scale(0.95);
+    }
+
+    20% {
+        transform: rotate(-15deg);
+    }
+
+    55% {
+        transform: rotate(10deg);
+    }
+
+    80% {
+        transform: rotate(-3deg);
+    }
+
+    100% {
+        transform: rotate(0) scale(1);
+    }
+}
+
+@keyframes menu-container {
+    0% {
+        transform: scale(1, 1);
+    }
+
+    33% {
+        transform: scale(0.95, 1.05);
+    }
+
+    66% {
+        transform: scale(1.05, 0.95);
+    }
+
+    100% {
+        transform: scale(1, 1);
+    }
+}
+
+/*#endregion MENU*/

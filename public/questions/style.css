@@ -135,6 +135,16 @@ h3:active {
     transform: scale(.95);
 }
 
+h4 {
+    color: var(--color-fg);
+    margin: auto;
+    display: none;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    font-size: clamp(14px, 5vw, 24px);
+}
+
 p {
     font-size: clamp(14px, 5vw, 26px);
     margin: 0 0 0 5px;
@@ -216,6 +226,7 @@ p {
     justify-content: center;
     align-items: center;
     transform: rotate(180deg);
+    z-index: 799;
 }
 
 #menu-toggle {
@@ -258,7 +269,7 @@ p {
 
 #menu-container {
     width: 32px;
-    height: 150px;
+    height: 175px;
     border-radius: 64px;
     position: absolute;
     background: var(--color-green);
@@ -266,7 +277,7 @@ p {
     padding: 0.5rem 0.5rem;
     box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.4);
     opacity: 0;
-    top: -110px;
+    top: -130px;
     display: flex;
     pointer-events: none;
     flex-direction: column;
@@ -303,9 +314,9 @@ p {
 
 #menu input:checked~#menu-container {
     width: 32px;
-    height: 150px;
+    height: 175px;
     animation: menu-container 0.4s ease-out forwards 0.1s;
-    top: -180px;
+    top: -200px;
     opacity: 1;
     pointer-events: all;
 }

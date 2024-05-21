@@ -250,13 +250,14 @@ input:focus, textarea:focus {
 }
 
 .fa-lightbulb {
-  margin: 10px 10px 0px auto;
+  margin: 5px 10px 0 auto;
   font-size: clamp(16px, 5vw, 24px);
   color: var(--color-fg);
   cursor: pointer;
   box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.4);
-  width: 40px;
-  height: 40px;
+  height: 5vh;
+  aspect-ratio: 1/1;
+  max-height: 40px;
   border-radius: 100%;
   justify-content: center;
   align-items: center;
@@ -302,9 +303,10 @@ p {
 }
 
 #menu-toggle {
-  margin: 0 0 10px 2px;
-  width: 40px;
-  height: 40px;
+  margin: auto 0 5px 2px;
+  height: 5vh;
+  aspect-ratio: 1/1;
+  max-height: 40px;
   z-index: 3;
   border-radius: 100%;
   box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.4);

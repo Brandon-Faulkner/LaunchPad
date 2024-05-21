@@ -1,7 +1,7 @@
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.11.1/firebase-app.js";
 import { getDatabase, ref, onValue, child, update } from "https://www.gstatic.com/firebasejs/10.11.1/firebase-database.js";
-import { getAuth, onAuthStateChanged, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.11.1/firebase-auth.js";
+import { getAuth, onAuthStateChanged, signInWithEmailAndPassword, signOut } from "https://www.gstatic.com/firebasejs/10.11.1/firebase-auth.js";
 
 const firebaseConfig = {
     apiKey: "AIzaSyCkhBqKXXHQcgk9QYS7TTCY9I1kjx_bowk",
@@ -41,11 +41,35 @@ function ClearLeaderboard(boardNames) {
 }
 
 window.addEventListener('load', function () {
+    //Detect users prefered color scheme
+    const darkModeToggle = document.getElementById("dark-mode-toggle");
+    const localTheme = localStorage.getItem("theme");
+    const darkTheme = window.matchMedia("(prefers-color-scheme: dark)");
+    const currTheme = GetThemeString(localTheme, darkTheme);
+    document.querySelector("html").setAttribute("data-theme", currTheme);
+    currTheme === "dark" ? darkModeToggle.className = "fa-solid fa-lightbulb" : darkModeToggle.className = "fa-regular fa-lightbulb";
+    document.querySelector('meta[name="theme-color"]').setAttribute("content", currTheme === "dark" ? "#242424" : "#fff");
+
+    function GetThemeString(localTheme, darkTheme) {
+        if (localTheme !== null) return localTheme;
+        if (darkTheme.matches) return "dark";
+        return "light";
+    }
+
+    darkModeToggle.addEventListener('click', function () {
+        const newTheme = darkModeToggle.classList.contains("fa-solid") ? "light" : "dark";
+        localStorage.setItem("theme", newTheme);
+        document.querySelector("html").setAttribute("data-theme", newTheme);
+        newTheme === "dark" ? darkModeToggle.className = "fa-solid fa-lightbulb" : darkModeToggle.className = "fa-regular fa-lightbulb";
+        document.querySelector('meta[name="theme-color"]').setAttribute("content", newTheme === "dark" ? "#242424" : "#fff");
+    });
+
     var loginPage = document.getElementById("login-page");
     var loginButton = document.getElementById("login-button");
     var loginEmail = document.getElementById("login-email");
     var loginPassword = document.getElementById("login-password");
     var loginPeek = loginPassword.nextElementSibling;
+    var signOutBtn = document.querySelector('[title="Sign Out"]');
 
     //Detect login status
     onAuthStateChanged(auth, (user) => {
@@ -90,6 +114,17 @@ window.addEventListener('load', function () {
         } else {
             loginPeek.className = "fa-solid fa-eye eye-icon";
             loginPassword.setAttribute('type', 'password');
+        }
+    });
+
+    signOutBtn.addEventListener('click', function () {
+        if (auth?.currentUser.isAnonymous === false) {
+            signOut(auth).then(() => {
+                location.reload();
+            }).catch((error) => {
+                console.log(error.code + ": " + error.message);
+                alert("There was an issue with signing you out. Please try again.");
+            });
         }
     });
 });
