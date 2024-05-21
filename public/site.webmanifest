@@ -14,8 +14,8 @@
             "type": "image/png"
         }
     ],
-    "theme_color": "#00aa63",
-    "background_color": "#242424",
+    "theme_color": "#2d2d2d",
+    "background_color": "#2d2d2d",
     "start_url": "https://cana-launchpad.web.app",
     "display": "standalone",
     "orientation": "portrait"
