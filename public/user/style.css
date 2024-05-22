@@ -304,6 +304,8 @@ p {
 
 #menu-toggle {
   margin: auto 0 5px 2px;
+  font-size: clamp(16px, 5vw, 24px);
+  rotate: 45deg;
   height: 5vh;
   aspect-ratio: 1/1;
   max-height: 40px;
@@ -314,30 +316,11 @@ p {
   justify-content: center;
   align-items: center;
   animation: menu-toggle-reverse 0.4s ease-out forwards;
+  transition: color .2s linear;
 }
 
-#menu:hover #menu-toggle::before, 
-#menu:hover #menu-toggle::after {
-  background: var(--color-green);
-}
-
-#menu-toggle::before, #menu-toggle::after {
-  content: "";
-  display: block;
-  position: absolute;
-  border-radius: 4px;
-  background: var(--color-fg);
-  transition: background .2s linear;
-}
-
-#menu-toggle::before {
-  width: 4px;
-  height: 18px;
-}
-
-#menu-toggle::after {
-  width: 18px;
-  height: 4px;
+#menu:hover #menu-toggle {
+  color: var(--color-green);
 }
 
 #menu-container {
@@ -694,3 +677,26 @@ p {
   }
 }
 /*#endregion SPLASH SCREENS & OVERLAYS*/
+
+/*#region MOBILE RESPONSIVENESS */
+@media screen and (orientation: landscape) {
+  .button, .toggle input+label {
+    font-size: clamp(12px, 2vw, 18px);
+  }
+  h1, .name-box, .amount-box, h3 {
+    font-size: clamp(12px, 2vw, 16px);
+  }
+  h2, p, #overlay-textbox, .fa-lightbulb, #menu-toggle {
+    font-size: clamp(12px, 2vw, 14px);
+  }
+  #overlay-mainbox {
+    height: 50%;
+  }
+  .fa-lightbulb {
+    margin: 2px 10px 0 auto;
+  }
+  #menu-toggle {
+    margin: auto 0 2px 2px;
+  }
+}
+/*#endregion MOBILE RESPONSIVENESS */
