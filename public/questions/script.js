@@ -109,13 +109,22 @@ window.addEventListener('load', function () {
     });
 
     signOutBtn.addEventListener('click', function () {
-        if (auth?.currentUser.isAnonymous === false) {
+        if (auth?.currentUser?.isAnonymous === false) {
             signOut(auth).then(() => {
                 location.reload();
             }).catch((error) => {
                 console.log(error.code + ": " + error.message);
                 alert("There was an issue with signing you out. Please try again.");
             });
+        }
+    });
+
+    document.body.addEventListener('click', function (event) {
+        const menuCheckbox = document.getElementById('menu').children[0];
+        if (menuCheckbox.checked) {
+            if (event.target.parentElement.getAttribute('id') !== 'menu') {
+                menuCheckbox.checked = false;
+            }
         }
     });
 });

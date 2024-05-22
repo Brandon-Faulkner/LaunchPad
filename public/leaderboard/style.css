@@ -138,7 +138,7 @@ p {
     grid-template-columns: 100%;
     grid-template-rows: 20% 68% 8%;
     grid-gap: 2%;
-    position: fixed;
+    height: 100%;
     inset: 10px;
 }
 
@@ -220,7 +220,7 @@ p {
 #login-page {
     height: 100%;
     width: 100%;
-    z-index: 899;
+    z-index: 898;
     position: fixed;
     inset: 0;
     opacity: 0;
@@ -375,11 +375,12 @@ form .field input:focus::placeholder {
     align-items: center;
     transform: rotate(180deg);
     margin: 5px 5px 0 auto;
-    z-index: 799;
+    z-index: 899;
 }
 
 #menu-toggle {
     margin: auto;
+    rotate: 45deg;
     height: 5vh;
     aspect-ratio: 1/1;
     max-height: 40px;
@@ -390,31 +391,11 @@ form .field input:focus::placeholder {
     justify-content: center;
     align-items: center;
     animation: menu-toggle-reverse 0.4s ease-out forwards;
+    transition: color .2s linear;
 }
 
-#menu:hover #menu-toggle::before,
-#menu:hover #menu-toggle::after {
-    background: var(--color-green);
-}
-
-#menu-toggle::before,
-#menu-toggle::after {
-    content: "";
-    display: block;
-    position: absolute;
-    border-radius: 4px;
-    background: var(--color-fg);
-    transition: background .2s linear;
-}
-
-#menu-toggle::before {
-    width: 4px;
-    height: 18px;
-}
-
-#menu-toggle::after {
-    width: 18px;
-    height: 4px;
+#menu:hover #menu-toggle {
+  color: var(--color-green);
 }
 
 #menu-container {
@@ -534,3 +515,15 @@ form .field input:focus::placeholder {
 }
 
 /*#endregion MENU*/
+
+/*#region MOBILE RESPONSIVENESS */
+@media screen and (orientation: landscape) {
+    #login-wrapper {
+        height: 90%;
+    }
+    #menu-toggle {
+        font-size: clamp(12px, 2vw, 14px);
+    }
+}
+
+/*#endregion MOBILE RESPONSIVENESS */

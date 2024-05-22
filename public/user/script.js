@@ -60,6 +60,15 @@ window.addEventListener('load', (event) => {
     document.querySelector('meta[name="theme-color"]').setAttribute("content", newTheme === "dark" ? "#242424" : "#fff");
   });
 
+  document.body.addEventListener('click', function (event) {
+    const menuCheckbox = document.getElementById('menu').children[0];
+      if (menuCheckbox.checked) {
+        if(event.target.parentElement.getAttribute('id') !== 'menu') {
+          menuCheckbox.checked = false;
+        }
+      }
+  });
+
   //#region Variables
   //Overlay Elems
   const loadingAnim = document.getElementById("loader");

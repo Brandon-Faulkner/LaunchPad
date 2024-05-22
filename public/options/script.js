@@ -149,7 +149,7 @@ window.addEventListener('load', (event) => {
   });
 
   signOutBtn.addEventListener('click', function () {
-    if (auth?.currentUser.isAnonymous === false) {
+    if (auth?.currentUser?.isAnonymous === false) {
       signOut(auth).then(() => {
         location.reload();
       }).catch((error) => {
@@ -157,6 +157,15 @@ window.addEventListener('load', (event) => {
         ShowNotifToast("Sign Out Error", "There was an issue with signing you out. Please try again.", "var(--red)", true, 5);
       });
     }
+  });
+
+  document.body.addEventListener('click', function (event) {
+    const menuCheckbox = document.getElementById('menu').children[0];
+      if (menuCheckbox.checked) {
+        if(event.target.parentElement.getAttribute('id') !== 'menu') {
+          menuCheckbox.checked = false;
+        }
+      }
   });
 });
 

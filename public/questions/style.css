@@ -84,8 +84,9 @@ button {
     color: var(--color-white);
     cursor: pointer;
     box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.4);
-    width: 40px;
-    height: 40px;
+    height: 5vh;
+    aspect-ratio: 1/1;
+    max-height: 40px;
     border-radius: 100%;
     justify-content: center;
     align-items: center;
@@ -190,7 +191,7 @@ p {
 #question-holder {
     display: flex;
     flex-flow: column;
-    gap: 10px;    
+    gap: 10px;
 }
 
 .button {
@@ -226,13 +227,15 @@ p {
     justify-content: center;
     align-items: center;
     transform: rotate(180deg);
-    z-index: 799;
+    z-index: 899;
 }
 
 #menu-toggle {
     margin: auto 10px auto 5px;
-    width: 40px;
-    height: 40px;
+    rotate: 45deg;
+    height: 5vh;
+    aspect-ratio: 1/1;
+    max-height: 40px;
     z-index: 3;
     border-radius: 100%;
     box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.4);
@@ -240,31 +243,11 @@ p {
     justify-content: center;
     align-items: center;
     animation: menu-toggle-reverse 0.4s ease-out forwards;
+    transition: color .2s linear;
 }
 
-#menu:hover #menu-toggle::before,
-#menu:hover #menu-toggle::after {
-    background: var(--color-dark);
-}
-
-#menu-toggle::before,
-#menu-toggle::after {
-    content: "";
-    display: block;
-    position: absolute;
-    border-radius: 4px;
-    background: var(--color-white);
-    transition: background .2s linear;
-}
-
-#menu-toggle::before {
-    width: 4px;
-    height: 18px;
-}
-
-#menu-toggle::after {
-    width: 18px;
-    height: 4px;
+#menu:hover #menu-toggle {
+    color: var(--color-dark);
 }
 
 #menu-container {
@@ -393,6 +376,7 @@ p {
     position: fixed;
     inset: 0;
     background: var(--color-overlay);
+    z-index: 999;
 }
 
 #overlay-title {
@@ -466,7 +450,7 @@ p {
 #login-page {
     height: 100%;
     width: 100%;
-    z-index: 899;
+    z-index: 898;
     position: fixed;
     inset: 0;
     opacity: 0;
@@ -613,3 +597,24 @@ form .field input:focus::placeholder {
 }
 
 /*#endregion LOGIN SCREEN*/
+
+/*#region MOBILE RESPONSIVENESS */
+@media screen and (orientation: landscape) {
+    #login-wrapper {
+        height: 90%;
+    }
+    .button,h3,h2,p {
+        font-size: clamp(12px, 4vw, 22px);
+    }
+    h1 {
+        font-size: clamp(12px, 4vw, 28px);
+    }
+    #overlay-mainbox {
+        height: 50%;
+    }
+    .fa-lightbulb,#menu-toggle {
+        font-size: clamp(12px, 2vw, 14px);
+    }
+}
+
+/*#endregion MOBILE RESPONSIVENESS */

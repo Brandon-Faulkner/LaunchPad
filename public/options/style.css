@@ -285,7 +285,7 @@ h2 {
 #login-page {
   height: 100%;
   width: 100%;
-  z-index: 899;
+  z-index: 898;
   position: fixed;
   inset: 0;
   opacity: 0;
@@ -438,10 +438,12 @@ form .field input:focus::placeholder {
   justify-content: center;
   align-items: center;
   transform: rotate(180deg);
+  z-index: 899;
 }
 
 #menu-toggle {
   margin: auto 0 5px 2px;
+  rotate: 45deg;
   height: 5vh;
   aspect-ratio: 1/1;
   max-height: 40px;
@@ -452,30 +454,11 @@ form .field input:focus::placeholder {
   justify-content: center;
   align-items: center;
   animation: menu-toggle-reverse 0.4s ease-out forwards;
+  transition: color .2s linear;
 }
 
-#menu:hover #menu-toggle::before, 
-#menu:hover #menu-toggle::after {
-  background: var(--color-green);
-}
-
-#menu-toggle::before, #menu-toggle::after {
-  content: "";
-  display: block;
-  position: absolute;
-  border-radius: 4px;
-  background: var(--color-fg);
-  transition: background .2s linear;
-}
-
-#menu-toggle::before {
-  width: 4px;
-  height: 18px;
-}
-
-#menu-toggle::after {
-  width: 18px;
-  height: 4px;
+#menu:hover #menu-toggle {
+  color: var(--color-green);
 }
 
 #menu-container {
@@ -671,6 +654,7 @@ form .field input:focus::placeholder {
   height: 100vh;
   width: 100vw;
   background: var(--color-overlay);
+  z-index: 999;
 }
 
 #overlay-title {
@@ -804,7 +788,7 @@ form .field input:focus::placeholder {
 
 .leaderboard-cancel {
   background: var(--color-label-yes);
-  margin: 0 3.5% 0 0;
+  margin: auto;
   max-width: 150px;
   height: 75%;
   display: flex;
@@ -812,12 +796,11 @@ form .field input:focus::placeholder {
   align-items: center;
   justify-self: center;
   align-self: center;
-  margin-top: 10px
 }
 
 .leaderboard-delete {
   background: var(--color-red);
-  margin: 0 3.5% 0 0;
+  margin: auto;
   max-width: 150px;
   height: 75%;
   display: flex;
@@ -825,7 +808,6 @@ form .field input:focus::placeholder {
   align-items: center;
   justify-self: center;
   align-self: center;
-  margin-top: 10px;
 }
 
 .checkbox>input {
@@ -962,3 +944,32 @@ form .field input:focus::placeholder {
 }
 
 /*#endregion NOTIFICATION TOAST*/
+
+/*#region MOBILE RESPONSIVENESS */
+@media screen and (orientation: landscape) {
+  #login-wrapper {
+    height: 90%;
+  }
+  .button, .toggle input+label {
+    font-size: clamp(12px, 2vw, 18px);
+  }
+  #btnUserApp, #btnLeaderboard {
+    height: 100%;
+  }
+  h1,.name-box, .dropdown, h3 {
+    font-size: clamp(12px, 2vw, 16px);
+  }
+  h2, p, #overlay-textbox, .fa-lightbulb, #menu-toggle {
+    font-size: clamp(12px, 2vw, 14px);
+  }
+  #user-app {
+    height: 50%;
+  }
+  .fa-lightbulb {
+    margin: 2px 10px 0 auto;
+  }
+  #menu-toggle {
+    margin: auto 0 2px 2px;
+  }
+}
+/*#endregion MOBILE RESPONSIVENESS */
