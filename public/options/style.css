@@ -51,7 +51,7 @@ input:not(.login-field > input) {
   color: var(--color-fg);
   background: var(--color-lightbox);
   border-radius: 5px;
-  border: 1px solid var(--color-lightwhite);
+  border: 1px solid transparent;
   outline: none;
   transition: border .25s;
 }
@@ -115,10 +115,15 @@ input:not(.login-field > input, .checkbox > input):focus {
   height: 100%;
   color: var(--color-fg);
   border-radius: 5px;
-  border: none;
+  border: 1px solid transparent;
   outline: none;
   font-family: 'Futura PT', 'sans-serif';
   font-size: clamp(16px, 4vw, 38px);
+  transition: border .25s;
+}
+
+.dropdown:focus {
+  border-color: var(--color-green);
 }
 
 .grid-titles {
@@ -946,7 +951,7 @@ form .field input:focus::placeholder {
 /*#endregion NOTIFICATION TOAST*/
 
 /*#region MOBILE RESPONSIVENESS */
-@media screen and (orientation: landscape) {
+@media screen and (orientation: landscape) and (max-width: 1024px) {
   #login-wrapper {
     height: 90%;
   }

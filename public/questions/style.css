@@ -599,7 +599,7 @@ form .field input:focus::placeholder {
 /*#endregion LOGIN SCREEN*/
 
 /*#region MOBILE RESPONSIVENESS */
-@media screen and (orientation: landscape) {
+@media screen and (orientation: landscape) and (max-width: 1024px) {
     #login-wrapper {
         height: 90%;
     }

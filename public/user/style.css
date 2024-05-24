@@ -679,7 +679,7 @@ p {
 /*#endregion SPLASH SCREENS & OVERLAYS*/
 
 /*#region MOBILE RESPONSIVENESS */
-@media screen and (orientation: landscape) {
+@media screen and (orientation: landscape) and (max-width: 1024px) {
   .button, .toggle input+label {
     font-size: clamp(12px, 2vw, 18px);
   }
