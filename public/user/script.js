@@ -112,11 +112,13 @@ window.addEventListener('load', (event) => {
           FadeElems(loadingOverlay, false);
           FadeElems(notTimeBox, false);
           FadeElems(loadingAnim, false);
+          document.getElementById("menu").style = "";
         }
         else {
           FadeElems(loadingOverlay, true, true);
           FadeElems(notTimeBox, true, true);
           FadeElems(loadingAnim, false);
+          document.getElementById("menu").style = "z-index: 1";
         }
       });
     } else {
